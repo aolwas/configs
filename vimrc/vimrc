@@ -1,0 +1,250 @@
+" vim-sublime - A minimal Sublime Text -like vim experience bundle
+"               http://github.com/grigio/vim-sublime
+" Best view with a 256 color terminal and Powerline fonts
+"
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim/
+call vundle#rc()
+Plugin 'gmarik/Vundle.vim'
+
+Plugin 'shougo/unite.vim'
+Plugin 'shougo/neocomplete.vim'
+Plugin 'shougo/unite-outline'
+Plugin 'shougo/vimfiler.vim'
+Plugin 'shougo/neossh.vim'
+Plugin 'shougo/vimproc.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'vim-airline/vim-airline'
+Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/syntastic'
+Plugin 'BufClose.vim'
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'ervandew/supertab'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'fatih/vim-go'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'rking/ag.vim'
+" Color Themes
+Plugin 'flazz/vim-colorschemes'
+colorscheme Tomorrow-Night
+
+""""""""
+filetype on
+filetype plugin on
+filetype indent on
+syntax enable
+
+" define leader key
+let mapleader = ','
+
+" Use :help 'option' to see the documentation for the given option.
+set autoindent
+set backspace=indent,eol,start
+set complete-=i
+set showmatch
+set showmode
+set smarttab
+
+set nrformats-=octal
+set shiftround
+
+set ttimeout
+
+set incsearch
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+endif
+
+set laststatus=2
+set ruler
+set showcmd
+set wildmenu
+let g:buftabs_only_basename=1
+let g:buftabs_marker_modified = "+"
+
+set autoread
+
+set encoding=utf-8
+set tabstop=4 shiftwidth=4 expandtab
+set listchars=tab:▒░,trail:▓
+set list
+
+inoremap <C-U> <C-G>u<C-U>
+
+set number
+set hlsearch
+set ignorecase
+set smartcase
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+" In needed, you can enable mouse in terminal by uncommenting the following lines.
+"if has('mouse')
+"  set mouse=a
+"endif
+
+" do not history when leavy buffer
+set hidden
+
+set nobackup
+set nowritebackup
+set noswapfile
+set fileformats=unix,dos,mac
+
+set completeopt=menuone,longest,preview
+
+"
+" Plugins config
+"
+
+"
+" unite
+"
+let g:unite_source_history_yank_enable =1
+nnoremap <silent> <Leader>b :<C-u>Unite -buffer-name=files buffer<CR>
+nnoremap <silent> <Leader>g :<C-u>Unite grep<CR>
+nnoremap <silent> <Leader>o :<C-u>Unite outline<CR>
+nnoremap <silent> <Leader>uc :<C-u>UniteClose<CR>
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts =
+  \ '-i --vimgrep --hidden --ignore ' .
+  \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+let g:unite_source_grep_recursive_opt = ''
+
+"
+" vimfiler
+"
+let g:vimfiler_as_default_explorer = 0
+let g:vimfiler_tree_leaf_icon = " "
+let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_file_icon = '-'
+let g:vimfiler_marked_file_icon = '✓'
+let g:vimfiler_readonly_file_icon = '✗'
+call vimfiler#custom#profile('default', 'context', {
+      \ 'safe' : 0,
+      \ })
+
+"
+" Autoformat
+"
+noremap <silent> <Leader>ff :Autoformat<CR>
+let g:formatdef_autopep8 = "'autopep8 - --range '.a:firstline.' '.a:lastline"
+let g:formatters_python = ['autopep8']
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+let g:autoformat_remove_trailing_spaces = 0
+
+"
+" neocomplete
+"
+let g:neocomplete#enable_at_startup = 1
+autocmd FileType python setlocal omnifunc=jedi#completions
+let g:jedi#completions_enabled = 0
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#smart_auto_mappings = 0
+if !exists('g:neocomplete#force_omni_input_patterns')
+        let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.python =
+\ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+" alternative pattern: '\h\w*\|[^. \t]\.\w*'
+
+"
+" Configure Ultisnip
+"
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:ultisnips_python_style="jedi"
+
+" fugitive
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gr :Gremove<CR>
+nnoremap <Leader>gl :Glog<CR>
+nnoremap <Leader>gb :Gblame<CR>
+nnoremap <Leader>gm :Gmove
+nnoremap <Leader>gp :Ggrep
+nnoremap <Leader>gR :Gread<CR>
+nnoremap <Leader>gg :Git
+nnoremap <Leader>gd :Gdiff<CR>
+
+"
+" Basic shortcuts definitions
+"  most in visual mode / selection (v or ⇧ v)
+"
+" Prevent cursor from moving to beginning of line when switching buffers
+set nostartofline
+
+" H = Home, L = End
+noremap H ^
+noremap L $
+vnoremap L g_
+
+" ,hljk = Move between windows
+nnoremap <Leader>h <C-w>h
+nnoremap <Leader>l <C-w>l
+nnoremap <Leader>j <C-w>j
+nnoremap <Leader>k <C-w>k
+
+" Ctrl Left/h & Right/l cycle between buffers
+noremap <silent> <C-left> :bprev<CR>
+noremap <silent> <C-right> :bnext<CR>
+
+" Tabs
+nnoremap <C-b>  :tabprevious<CR>
+inoremap <C-b>  <Esc>:tabprevious<CR>i
+nnoremap <C-n>  :tabnext<CR>
+inoremap <C-n>  <Esc>:tabnext<CR>i
+nnoremap <C-t>  :tabnew<CR>
+inoremap <C-t>  <Esc>:tabnew<CR>i
+nnoremap <C-e>  :tabclose<CR>
+inoremap <C-e>  <Esc>:tabclose<CR>i
+
+" ,q Closes the current buffer
+nnoremap <silent> <Leader>q :BufClose<CR>
+
+" Find
+"nnoremap <leader>f :/
+"type S, then type what you're looking for, a /, and what to replace it with
+nmap S :%s//g<LEFT><LEFT>
+vmap S :s//g<LEFT><LEFT>
+
+" indend / deindent after selecting the text with (⇧ v), (.) to repeat.
+vnoremap <Tab> >
+vnoremap <S-Tab> <
+
+" Cut, Paste, Copy
+vmap <Leader>x d
+vmap <Leader>v p
+vmap <Leader>c y
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+" Undo, Redo (broken)
+nnoremap <Leader>z  :undo<CR>
+inoremap <Leader>z  <Esc>:undo<CR>
+nnoremap <Leader>y  :redo<CR>
+inoremap <Leader>y  <Esc>:redo<CR>
+
+" ,T = Delete all Trailing space in file
+map <Leader>T :%s/\s\+$//<CR>
+
+" ,U = Deletes Unwanted empty lines
+map <Leader>U :g/^$/d<CR>
+
+" ,R = Converts tabs to spaces in document
+map <Leader>R :retab<CR>
+
+" this machine config
+if filereadable(expand("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
