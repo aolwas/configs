@@ -123,12 +123,6 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-# exit i3-gnome 
-bindsym $mod+x exec gnome-session-quit --logout --no-prompt
-
-# i3-gnome poweroff menu including suspend, etc.
-bindsym $mod+Shift+x exec gnome-session-quit --power-off --no-prompt
-
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -158,17 +152,34 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+        status_command i3status --config ~/.config/i3/i3status.conf
 }
 
+# exit i3 (logs you out of your X session)
+set $mode_system System (l) lock, (e) logout, (s) suspend, (Shift+s) lock+suspend, (r) reboot, (Shift+q) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id ~/.config/i3/i3exit lock, mode "default"
+    bindsym e exec --no-startup-id ~/.config/i3/i3exit logout, mode "default"
+    bindsym s exec --no-startup-id ~/.config/i3/i3exit suspend, mode "default"
+    bindsym Shift+s exec --no-startup-id ~/.config/i3/i3exit lock-suspend, mode "default"
+    # bindsym h exec --no-startup-id ~/.config/i3/i3exit hibernate, mode "default"
+    bindsym r exec --no-startup-id ~/.config/i3/i3exit reboot, mode "default"
+    bindsym Shift+q exec --no-startup-id ~/.config/i3/i3exit shutdown, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+x mode "$mode_system"
+
 # Audio shortcuts 
-bindsym XF86AudioLowerVolume exec /usr/bin/pactl set-sink-volume 0 -5%
-bindsym XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume 0 +5%
-bindsym XF86AudioMute exec /usr/bin/pactl set-sink-mute 0 toggle
+bindsym XF86AudioLowerVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 -5%
+bindsym XF86AudioRaiseVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 +5%
+bindsym XF86AudioMute exec --no-startup-id /usr/bin/pactl set-sink-mute 0 toggle
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 20 # increase screen brightness
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 20 # decrease screen brightness
 
 # Gnome setting daemon
 exec --no-startup-id /usr/bin/gnome-settings-daemon
