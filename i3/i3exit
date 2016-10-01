@@ -1,107 +1,31 @@
 #!/bin/sh
 
-# The lock program
 lock() {
-    i3lock
+    i3lock -i ~/.config/i3/images/bless-the-maker.png
 }
-
-distro=`lsb_release -cs`
-
-case "$distro" in
-    precise)
-        # Ubuntu 12.04
-        suspend() {
-            dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend
-        }
-        hibernate() {
-            dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Hibernate
-        }
-        reboot() {
-            dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart
-        }
-        shutdown() {
-            dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
-        }
-        ;;
-    trusty)
-        # Ubuntu 14.04
-        suspend() {
-            dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Suspend" boolean:true
-        }
-        hibernate() {
-            dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Hibernate" boolean:true
-        }
-        reboot() {
-            dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.Reboot" boolean:true
-        }
-        shutdown() {
-            dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 "org.freedesktop.login1.Manager.PowerOff" boolean:true
-        }
-        ;;
-    xenial)
-        # Ubuntu 14.04
-        suspend() {
-            systemctl suspend
-        }
-        hibernate() {
-            systemctl hibernate
-        }
-        reboot() {
-            systemctl reboot
-        }
-        shutdown() {
-            systemctl poweroff
-        }
-        ;;
-    # TODO:
-    Bottle)
-        # openSUSE 13.1
-        shutdown() {
-            dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit --type=method_call /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
-        }
-        suspend() { :; }
-        hibernate() { :; }
-        reboot() {
-            dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit --type=method_call /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart
-        }
-        ;;
-    *)
-        # Only provide shutdown via "i3-msg exit"
-        suspend() { :; }
-        hibernate() { :; }
-        reboot() { :; }
-        shutdown() {
-            i3-msg exit
-        }
-        ;;
-esac
 
 case "$1" in
     lock)
         lock
-        ;;
+	;;
     logout)
-        i3-msg exit
-        ;;
-    lock-suspend)
-        lock && suspend
-        ;;
+	i3-msg exit
+	;;
     suspend)
-        suspend
-        ;;
-    # I do not want to hibernate.
-    # hibernate)
-    #   lock && hibernate
-    #   ;;
+	lock && systemctl suspend
+	;;
+    hibernate)
+	lock && systemctl hibernate
+	;;
     reboot)
-        reboot
-        ;;
+	systemctl reboot
+	;;
     shutdown)
-        shutdown
-        ;;
+	systemctl poweroff
+	;;
     *)
-        echo "Usage: $0 {lock|logout|lock-suspend|suspend|reboot|shutdown}"
-        exit 2
+	echo "usage: $0 (lock|logout|suspend|hibernate|reboot|shutdown)"
+	exit 2
 esac
 
 exit 0
