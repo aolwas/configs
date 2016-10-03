@@ -1,7 +1,7 @@
 #!/bin/sh
 
 lock() {
-    i3lock -i ~/.config/i3/images/bless-the-maker.png
+    i3lock -i ~/.config/i3/images/bless-the-maker.png -t
 }
 
 case "$1" in
