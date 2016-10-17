@@ -44,7 +44,7 @@ set $dark	#00252E
 client.focused			$orange  $darkorange  $white    $dark
 client.unfocused		$dark   $black   $white   $white
 client.focused_inactive	        $dark   $black   $white   $dark
-client.urgent			$red $darkorange $full-white  $white
+client.urgent			$red $darkorange $red  $white
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -202,8 +202,6 @@ mode "$mode_system" {
 }
 bindsym $mod+Shift+x mode "$mode_system"
 
-bindsym $mod+Control+l exec gnome-screensaver-command -l
-
 # Audio shortcuts 
 bindsym XF86AudioLowerVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 -5%
 bindsym XF86AudioRaiseVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 +5%
@@ -216,8 +214,14 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 20 # decrease
 # Setup wallpaper
 exec --no-startup-id feh --bg-scale ~/.config/i3/images/bless-the-maker.png
 
+# Setup Natural scrolling
+exec --no-startup xinput set-prop "AlpsPS/2 ALPS DualPoint TouchPad" 288 1
+
 # Gnome setting daemon
 exec --no-startup-id /usr/bin/gnome-settings-daemon
+
+# Gnome Keyring daemon
+exec --no-startup /usr/bin/gnome-keyring-daemon
 
 # Enable gnome startup applications
 exec --no-startup-id dex -ae i3
