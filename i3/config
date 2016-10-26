@@ -40,10 +40,22 @@ set $orange     #FFA500
 set $cyan	#2AA198
 set $dark	#00252E
 
+# Fancy names for workspaces
+set $w1 1: www
+set $w2 2
+set $w3 3
+set $w4 4
+set $w5 5
+set $w6 6
+set $w7 7
+set $w8 8
+set $w9 9
+set $w10 10
+
 #class                  border  backgr. text    indicator
 client.focused			$orange  $darkorange  $white    $dark
 client.unfocused		$dark   $black   $white   $white
-client.focused_inactive	        $dark   $black   $white   $dark
+client.focused_inactive	$dark   $black   $white   $dark
 client.urgent			$red $darkorange $red  $white
 
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -53,7 +65,7 @@ floating_modifier $mod
 bindsym $mod+Return exec i3-sensible-terminal
 
 # kill focused window
-bindsym $mod+Shift+A kill
+bindsym $mod+q kill
 
 # start dmenu (a program launcher)
 # bindsym $mod+d exec dmenu_run
@@ -61,6 +73,9 @@ bindsym $mod+Shift+A kill
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+
+# rename workspace
+bindsym $mod+Shift+y exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 
 # change focus
 bindsym $mod+j focus left
@@ -107,34 +122,56 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+q focus parent
+bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
 
 # switch to workspace
-bindsym $mod+ampersand workspace 1
-bindsym $mod+eacute workspace 2
-bindsym $mod+quotedbl workspace 3
-bindsym $mod+apostrophe workspace 4
-bindsym $mod+parenleft workspace 5
-bindsym $mod+minus workspace 6
-bindsym $mod+egrave workspace 7
-bindsym $mod+underscore workspace 8
-bindsym $mod+ccedilla workspace 9
-bindsym $mod+agrave workspace 10
+bindsym $mod+1 workspace $w1
+bindsym $mod+2 workspace $w2
+bindsym $mod+3 workspace $w3
+bindsym $mod+4 workspace $w4
+bindsym $mod+5 workspace $w5
+bindsym $mod+6 workspace $w6
+bindsym $mod+7 workspace $w7
+bindsym $mod+8 workspace $w8
+bindsym $mod+9 workspace $w9
+bindsym $mod+0 workspace $w10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+eacute move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+egrave move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+ccedilla move container to workspace 9
-bindsym $mod+Shift+agrave move container to workspace 10
+bindsym $mod+Shift+1 move container to workspace $w1
+bindsym $mod+Shift+2 move container to workspace $w2
+bindsym $mod+Shift+3 move container to workspace $w3
+bindsym $mod+Shift+4 move container to workspace $w4
+bindsym $mod+Shift+5 move container to workspace $w5
+bindsym $mod+Shift+6 move container to workspace $w6
+bindsym $mod+Shift+7 move container to workspace $w7
+bindsym $mod+Shift+8 move container to workspace $w8
+bindsym $mod+Shift+9 move container to workspace $w9
+bindsym $mod+Shift+0 move container to workspace $w10
+
+set $mode_ws_move Move workspace: (L)eft, (R)ight, (U)p, (D)own
+mode "$mode_ws_move" {
+        bindsym l move workspace to output left
+        bindsym r move workspace to output right
+        bindsym u move workspace to output up
+        bindsym d move workspace to output down
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+bindsym $mod+w mode "$mode_ws_move"
+
+set $mode_external_pos External screen is on (l)eft or (r)ight of the internal one?
+mode "$mode_external_pos" {
+        bindsym r exec xrandr --output DP1 --mode 1920x1080 --right-of eDP1
+        bindsym l exec xrandr --output DP1 --mode 1920x1080 --left-of eDP1
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+bindsym $mod+Shift+s mode "$mode_external_pos"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
