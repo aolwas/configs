@@ -10,7 +10,6 @@ Main plugins included:
 * unite.vim: enhanced sublimetext-like ctrl-p functionality
 * vimfiler: unite based file browser
 * neocomplete: auto-complete plugin
-* airline: enhanced status line
 * fugitive: Git management plugin
 * Nerdcommenter: easy comment plugin
 * syntastic: syntax checker
