@@ -1,0 +1,122 @@
+#!/bin/bash
+# Bash wrappers for docker run commands
+
+export DOCKER_REPO_PREFIX=xamoc
+
+#
+# Helper Functions
+#
+dcleanup(){
+	local containers
+	containers=( $(docker ps -aq 2>/dev/null) )
+	docker rm "${containers[@]}" 2>/dev/null
+	local volumes
+	volumes=( $(docker ps --filter status=exited -q 2>/dev/null) )
+	docker rm -v "${volumes[@]}" 2>/dev/null
+	local images
+	images=( $(docker images --filter dangling=true -q 2>/dev/null) )
+	docker rmi "${images[@]}" 2>/dev/null
+}
+del_stopped(){
+	local name=$1
+	local state
+	state=$(docker inspect --format "{{.State.Running}}" "$name" 2>/dev/null)
+
+	if [[ "$state" == "false" ]]; then
+		docker rm "$name"
+	fi
+}
+relies_on(){
+	for container in "$@"; do
+		local state
+		state=$(docker inspect --format "{{.State.Running}}" "$container" 2>/dev/null)
+
+		if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
+			echo "$container is not running, starting it for you."
+			$container
+		fi
+	done
+}
+
+chrome(){
+	del_stopped chrome
+
+	# one day remove /etc/hosts bind mount when effing
+	# overlay support inotify, such bullshit
+	docker run -d \
+		--memory 3gb \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e "DISPLAY=unix${DISPLAY}" \
+		-v "${HOME}/Downloads:/root/Downloads" \
+		-v "${HOME}/Pictures:/root/Pictures" \
+		-v "${HOME}/Torrents:/root/Torrents" \
+		-v "${HOME}/.chrome:/data" \
+		-v /dev/shm:/dev/shm \
+		-v /etc/hosts:/etc/hosts \
+		--device /dev/snd \
+		--device /dev/dri \
+		--device /dev/video0 \
+		--group-add audio \
+		--group-add video \
+		--name chrome \
+		${DOCKER_REPO_PREFIX}/chrome --user-data-dir=/data 
+		#--device /dev/usb \
+		#--device /dev/bus/usb \
+		#--security-opt seccomp:/etc/docker/seccomp/chrome.json \
+}
+
+tomahawk() {
+	del_stopped tomahawk
+
+	docker run -d -u $(whoami) \
+		-v /etc/passwd:/etc/passwd:ro \
+		-v /etc/group:/etc/group:ro \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /home:/home \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e DISPLAY=unix$DISPLAY \
+		-v /dev/snd:/dev/snd \
+		--privileged \
+		--name tomahawk \
+		${DOCKER_REPO_PREFIX}/tomahawk
+}
+
+sysdig() {
+    docker run -it --rm --privileged \
+        -v /var/run/docker.sock:/host/var/run/docker.sock \
+        -v /dev:/host/dev \
+        -v /proc:/host/proc:ro \
+        -v /boot:/host/boot:ro \
+        -v /lib/modules:/host/lib/modules:ro \
+        -v /usr:/host/usr:ro \
+        --name sysdig \
+        sysdig/sysdig csysdig
+}
+
+###
+### Awesome sauce by @jpetazzo
+###
+command_not_found_handle () {
+	# Check if there is a container image with that name
+	if ! docker inspect --format '{{ .Author }}' "$1" >&/dev/null ; then
+		echo "$0: $1: command not found"
+		return
+	fi
+
+	# Check that it's really the name of the image, not a prefix
+	if docker inspect --format '{{ .Id }}' "$1" | grep -q "^$1" ; then
+		echo "$0: $1: command not found"
+		return
+	fi
+
+	docker run -ti -u "$(whoami)" -w "$HOME" \
+		"$(env | cut -d= -f1 | awk '{print "-e", $1}')" \
+		--device /dev/snd \
+		-v /etc/passwd:/etc/passwd:ro \
+		-v /etc/group:/etc/group:ro \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /home:/home \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		"${DOCKER_REPO_PREFIX}/${1}" "$@"
+}

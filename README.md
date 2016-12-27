@@ -4,7 +4,9 @@ Misc config files (vim, i3, etc)
 # Install
 
 ```bash
-$ ln -s ~/.config/i3 REPO_GIT/i3
-$ ln -s ~/.config/powerline REPO_GIT/powerline
-$ ln -s ~/.vimrc REPO_GIT/vimrc/vimrc
+$ ln -s REPO_GIT/i3 ~/.config/i3
+$ ln -s REPO_GIT/powerline ~/.config/powerline
+$ ln -s REPO_GIT/vimrc/vimrc ~/.vimrc
 ```
+
+see [dockerfunc/Readme.md](dockerfunc/Readme.md) for docker based application launch functions
