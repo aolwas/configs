@@ -63,6 +63,10 @@ echo -e "python3 powerline_setup()\npython3 del powerline_setup" >> ~/.vimrc
 # enable in shell
 echo ". /usr/share/powerline/bindings/bash/powerline.sh" >> ~/.bashrc
 
+# enable in tmux
+echo 'source "/usr/share/powerline/bindings/tmux/powerline.conf"' >> ~/.tmux.conf
+echo 'set-option -g default-terminal "screen-256color"' >> ~/.tmux.conf
+
 # configure TERM variable to work properly under gnome-terminal with and without screen
 echo 'if [ "$TERM" != "screen-256color" ] ; then' >> ~/.bashrc
 echo -e "\texport TERM=xterm-256color\nfi" >> ~/.bashrc
