@@ -42,8 +42,8 @@ set $dark	#00252E
 
 # Fancy names for workspaces
 set $w1 1: www
-set $w2 2
-set $w3 3
+set $w2 2: term
+set $w3 3: code
 set $w4 4
 set $w5 5
 set $w6 6
@@ -238,6 +238,12 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 bindsym $mod+Shift+x mode "$mode_system"
+
+# Assign application to workspaces
+assign [class="Rocket.Chat+"] $w1
+assign [class="Google-chrome"] $w1
+assign [class="Gnome-terminal"] $w2
+assign [class="Code"] $w3
 
 # Audio shortcuts 
 bindsym XF86AudioLowerVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 -5%
