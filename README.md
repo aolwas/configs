@@ -7,6 +7,7 @@ Misc config files (vim, i3, etc)
 $ ln -s REPO_GIT/i3 ~/.config/i3
 $ ln -s REPO_GIT/powerline ~/.config/powerline
 $ ln -s REPO_GIT/vimrc/vimrc ~/.vimrc
+$ ln -s REPO_GIT/zsh/zshrc ~/.zshrc
 ```
 
 see [dockerfunc/Readme.md](dockerfunc/Readme.md) for docker based application launch functions

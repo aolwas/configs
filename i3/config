@@ -62,7 +62,8 @@ client.urgent			$red $darkorange $red  $white
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+# bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec terminator
 
 # kill focused window
 bindsym $mod+q kill
@@ -245,6 +246,9 @@ assign [class="Google-chrome"] $w1
 assign [class="Gnome-terminal"] $w2
 assign [class="Code"] $w3
 
+# remove borders
+for_window [class="^.*"] border none
+
 # Audio shortcuts 
 bindsym XF86AudioLowerVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 -5%
 bindsym XF86AudioRaiseVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 +5%
@@ -257,14 +261,13 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 20 # decrease
 # Setup wallpaper
 exec --no-startup-id feh --bg-scale ~/.config/i3/images/bless-the-maker.png
 
-# Setup Natural scrolling
-exec --no-startup xinput set-prop "AlpsPS/2 ALPS DualPoint TouchPad" 288 1
-
 # Gnome setting daemon
 exec --no-startup-id /usr/bin/gnome-settings-daemon
 
 # Gnome Keyring daemon
-exec --no-startup /usr/bin/gnome-keyring-daemon
+exec --no-startup-id /usr/bin/gnome-keyring-daemon
 
-# Enable gnome startup applications
-exec --no-startup-id dex -ae i3
+# widget
+exec --no-startup-id nm-applet
+exec --no-startup-id volumeicon
+exec --no-startup-id seafile-applet 
