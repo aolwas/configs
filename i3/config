@@ -164,15 +164,15 @@ mode "$mode_ws_move" {
 }
 bindsym $mod+w mode "$mode_ws_move"
 
-set $mode_external_pos External screen is on (l)eft or (r)ight of the internal one?
+set $mode_external_pos (d)ock or (u)ndock laptop?
 mode "$mode_external_pos" {
-        bindsym r exec xrandr --output DP1 --mode 1920x1080 --right-of eDP1
-        bindsym l exec xrandr --output DP1 --mode 1920x1080 --left-of eDP1
+        bindsym d exec xrandr --output DP-1-3 --auto --above eDP-1
+        bindsym u exec xrandr --output DP-1-3 --off
         # back to normal: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-bindsym $mod+Shift+s mode "$mode_external_pos"
+bindsym $mod+Shift+d mode "$mode_external_pos"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
