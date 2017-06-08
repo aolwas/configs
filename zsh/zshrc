@@ -1,13 +1,17 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+#export PATH=/home/aolwas/.miniconda/bin:/home/aolwas/.linuxbrew/bin:$PATH
+export PATH=/home/aolwas/.linuxbrew/bin:$PATH
+export MANPATH=/home/aolwas/.linuxbrew/share/man:$MANPATH
+export INFOPATH=/home/aolwas/.linuxbrew/share/info:$INFOPATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/aolwas/.oh-my-zsh
+export ZSH=/home/aolwas/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="bullet-train"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -59,6 +63,8 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
+export VAULT_ADDR='https://vault.objectif-libre.corp:8200'
+
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -83,3 +89,4 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
