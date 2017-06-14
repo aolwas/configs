@@ -225,8 +225,10 @@ bindsym $mod+r mode "resize"
 #}
 
 bar {
-    mode invisible
-    tray_output eDP1
+#    mode invisible
+#    tray_output eDP1
+    position top
+    status_command mybarista
 }
 
 # exit i3 (logs you out of your X session)
@@ -261,7 +263,7 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 20 # decrease
 exec --no-startup-id feh --bg-scale ~/.config/i3/images/bless-the-maker.png
 
 # Gnome setting daemon
-exec --no-startup-id /usr/bin/gnome-settings-daemon
+exec --no-startup-id /usr/lib/gnome-settings-daemon
 
 # Gnome Keyring daemon
 exec --no-startup-id /usr/bin/gnome-keyring-daemon

@@ -1,9 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 #export PATH=/home/aolwas/.miniconda/bin:/home/aolwas/.linuxbrew/bin:$PATH
-export PATH=/home/aolwas/.linuxbrew/bin:$PATH
-export MANPATH=/home/aolwas/.linuxbrew/share/man:$MANPATH
-export INFOPATH=/home/aolwas/.linuxbrew/share/info:$INFOPATH
+export PATH=/home/aolwas/bin:$PATH:/home/aolwas/go/bin:/usr/local/go/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH=/home/aolwas/.oh-my-zsh
