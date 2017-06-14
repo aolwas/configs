@@ -228,7 +228,7 @@ bar {
 #    mode invisible
 #    tray_output eDP1
     position top
-    status_command mybarista
+    status_command ~/bin/mybarista
 }
 
 # exit i3 (logs you out of your X session)
