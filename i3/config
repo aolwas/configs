@@ -73,7 +73,7 @@ bindsym $mod+q kill
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # rename workspace
 bindsym $mod+Shift+y exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
@@ -260,7 +260,7 @@ bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 20 # increase s
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 20 # decrease screen brightness
 
 # Setup wallpaper
-exec --no-startup-id feh --bg-scale ~/.config/i3/images/bless-the-maker.png
+exec --no-startup-id feh --bg-scale ~/.config/i3/images/dune-black.jpg
 
 # Gnome setting daemon
 exec --no-startup-id /usr/lib/gnome-settings-daemon
@@ -269,10 +269,10 @@ exec --no-startup-id /usr/lib/gnome-settings-daemon
 exec --no-startup-id /usr/bin/gnome-keyring-daemon
 
 # start polybar
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # widget
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
 exec --no-startup-id seafile-applet 
-
+exec --no-startup-id albert
