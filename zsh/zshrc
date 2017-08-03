@@ -1,7 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 #export PATH=/home/aolwas/.miniconda/bin:/home/aolwas/.linuxbrew/bin:$PATH
-export PATH=/home/aolwas/bin:$PATH:/home/aolwas/go/bin:/usr/local/go/bin
+export PATH=/home/aolwas/bin:$PATH:/home/aolwas/go/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH=/home/aolwas/.oh-my-zsh
@@ -88,3 +88,9 @@ export VAULT_ADDR='https://vault.objectif-libre.corp:8200'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export XDG_DATA_DIRS="/home/linuxbrew/.linuxbrew/share:$XDG_DATA_DIRS"

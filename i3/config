@@ -74,6 +74,7 @@ bindsym $mod+q kill
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id albert show
 
 # rename workspace
 bindsym $mod+Shift+y exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
@@ -229,6 +230,16 @@ bar {
 #    tray_output eDP1
     position top
     status_command ~/bin/mybarista
+    colors {
+            #statusline	#999999
+            background	$black
+
+            # Colors            border      backgr.     text
+            focused_workspace	$orange	 	$darkorange		$white
+            #active_workspace	#073642 	#073642 	#696f89
+            #inactive_workspace	#073642 	#073642     $white
+            #urgent_workspace  	$orange		$orange		$dark
+    }
 }
 
 # exit i3 (logs you out of your X session)
@@ -247,8 +258,10 @@ mode "$mode_system" {
 }
 bindsym $mod+Shift+x mode "$mode_system"
 
+# Enable floating mode for Chromium
+for_window [class="chromium-browser"] floating enable
 # remove borders
-for_window [class="^.*"] border none
+for_window [class="^.*"] border pixel 2
 
 # Audio shortcuts 
 bindsym XF86AudioLowerVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 -5%
@@ -260,7 +273,7 @@ bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 20 # increase s
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 20 # decrease screen brightness
 
 # Setup wallpaper
-exec --no-startup-id feh --bg-scale ~/.config/i3/images/dune-black.jpg
+exec --no-startup-id feh --bg-scale ~/.config/i3/images/dune-black.png
 
 # Gnome setting daemon
 exec --no-startup-id /usr/lib/gnome-settings-daemon
@@ -274,5 +287,5 @@ exec --no-startup-id /usr/bin/gnome-keyring-daemon
 # widget
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
-exec --no-startup-id seafile-applet 
+exec --no-startup-id seafile-applet
 exec --no-startup-id albert
