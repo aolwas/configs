@@ -63,7 +63,7 @@ floating_modifier $mod
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec gnome-terminal
+bindsym $mod+Return exec termite
 
 # kill focused window
 bindsym $mod+q kill
@@ -259,11 +259,11 @@ mode "$mode_system" {
 bindsym $mod+Shift+x mode "$mode_system"
 
 # Enable floating mode for Chromium
-for_window [class="chromium-browser"] floating enable
+for_window [window_role="pop-up"] floating enable,move absolute center,move workspace current
 # remove borders
 for_window [class="^.*"] border pixel 2
 
-# Audio shortcuts 
+# Audio shortcuts
 bindsym XF86AudioLowerVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 -5%
 bindsym XF86AudioRaiseVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 +5%
 bindsym XF86AudioMute exec --no-startup-id /usr/bin/pactl set-sink-mute 0 toggle
