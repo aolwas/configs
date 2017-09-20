@@ -229,7 +229,7 @@ bar {
 #    mode invisible
 #    tray_output eDP1
     position top
-    status_command ~/bin/mybarista
+    status_command exec ~/bin/mybarista
     colors {
             #statusline	#999999
             background	$black
