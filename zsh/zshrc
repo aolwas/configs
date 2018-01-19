@@ -55,7 +55,10 @@ ZSH_THEME="bullet-train"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git tmux docker go vagrant history cp rsync zsh-completions kubectl)
 
+BULLETTRAIN_KCTX_KCONFIG=/home/aolwas/.kube/config
+
 source $ZSH/oh-my-zsh.sh
+
 
 # User configuration
 
