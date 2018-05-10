@@ -253,10 +253,10 @@ for_window [class="^.*"] border pixel 2
 ### System
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) poweroff
 mode "$mode_system" {
-	bindsym l exec --no-startup-id system-lock, mode "default"
+	bindsym l exec --no-startup-id xlock, mode "default"
 	bindsym e exec --no-startup-id i3-msg exit, mode "default"
-	bindsym s exec --no-startup-id "system-lock -b; system-suspend",   mode "default"
-	bindsym h exec --no-startup-id "system-lock -b; system-hibernate", mode "default"
+	bindsym s exec --no-startup-id "xlock -b; system-suspend",   mode "default"
+	bindsym h exec --no-startup-id "xlock -b; system-hibernate", mode "default"
 	bindsym r exec --no-startup-id system-reboot,    mode "default"
 	bindsym p exec --no-startup-id system-shutdown,  mode "default"
 
