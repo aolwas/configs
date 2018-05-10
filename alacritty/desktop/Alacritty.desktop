@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 TryExec=alacritty
-Exec=alacritty
+Exec=/home/aolwas/.linuxbrew/bin/alacritty
 Icon=utilities-terminal
 Terminal=false
 Categories=System;TerminalEmulator;
@@ -14,5 +14,5 @@ Actions=New;
 
 [Desktop Action New]
 Name=New Terminal
-Exec=alacritty
+Exec=/home/aolwas/.linuxbrew/bin/alacritty
 
