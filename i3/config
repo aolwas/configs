@@ -230,10 +230,9 @@ bindsym $mod+r mode "resize"
 
 bar {
 #    mode invisible
-#    tray_output eDP1
-    output eDP1
+    tray_output eDP1
     position top
-    status_command exec ~/bin/mybarista
+    status_command exec ~/go/bin/mybarista
     colors {
             #statusline	#999999
             background	$black
@@ -265,7 +264,7 @@ mode "$mode_system" {
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
 }
-
+bindsym $mod+Shift+x mode "$mode_system"
 
 ### Hardware
 
@@ -298,7 +297,11 @@ exec --no-startup-id feh --bg-scale ~/.config/i3/images/dune-black.png
 # Gnome Keyring daemon
 #exec --no-startup-id /usr/bin/gnome-keyring-daemon
 
+# Ibus
+exec --no-startup-id ibus-daemon --xim -d -r
+
 # widget
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
 exec --no-startup-id albert
+exec alacritty
