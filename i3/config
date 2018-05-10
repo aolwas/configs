@@ -230,7 +230,8 @@ bindsym $mod+r mode "resize"
 
 bar {
 #    mode invisible
-    tray_output eDP1
+#    tray_output eDP1
+    output eDP1
     position top
     status_command exec ~/bin/mybarista
     colors {
@@ -245,44 +246,57 @@ bar {
     }
 }
 
-# exit i3 (logs you out of your X session)
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (q) shutdown
-mode "$mode_system" {
-    bindsym l exec --no-startup-id ~/.config/i3/i3exit lock, mode "default"
-    bindsym e exec --no-startup-id ~/.config/i3/i3exit logout, mode "default"
-    bindsym s exec --no-startup-id ~/.config/i3/i3exit suspend, mode "default"
-    bindsym h exec --no-startup-id ~/.config/i3/i3exit hibernate, mode "default"
-    bindsym r exec --no-startup-id ~/.config/i3/i3exit reboot, mode "default"
-    bindsym q exec --no-startup-id ~/.config/i3/i3exit shutdown, mode "default"
-
-    # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-bindsym $mod+Shift+x mode "$mode_system"
-
 # Enable floating mode for Chromium
 for_window [window_role="pop-up"] floating enable,move absolute center,move workspace current
 # remove borders
 for_window [class="^.*"] border pixel 2
 
-# Audio shortcuts
-bindsym XF86AudioLowerVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 -5%
-bindsym XF86AudioRaiseVolume exec --no-startup-id /usr/bin/pactl set-sink-volume 0 +5%
-bindsym XF86AudioMute exec --no-startup-id /usr/bin/pactl set-sink-mute 0 toggle
+### System
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) poweroff
+mode "$mode_system" {
+	bindsym l exec --no-startup-id system-lock, mode "default"
+	bindsym e exec --no-startup-id i3-msg exit, mode "default"
+	bindsym s exec --no-startup-id "system-lock -b; system-suspend",   mode "default"
+	bindsym h exec --no-startup-id "system-lock -b; system-hibernate", mode "default"
+	bindsym r exec --no-startup-id system-reboot,    mode "default"
+	bindsym p exec --no-startup-id system-shutdown,  mode "default"
 
-# Sreen brightness controls
-bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 20 # decrease screen brightness
+	# Back to normal: Enter or Escape
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
 
+
+### Hardware
+
+# Sreen Backlight brightness
+bindsym XF86MonBrightnessUp   exec xf86-backlight -c up
+bindsym XF86MonBrightnessDown exec xf86-backlight -c down
+
+# Audio Volume
+bindsym XF86AudioRaiseVolume  exec xf86-audio -D pulse -c up
+bindsym XF86AudioLowerVolume  exec xf86-audio -D pulse -c down
+bindsym XF86AudioMute         exec xf86-audio -D pulse -c toggle
+
+
+### X Tools
+
+# Screenshot (with multi monitors)
+bindsym Print exec "xscreenshot -m multi"
+
+# Screenshot (select rectangle)
+bindsym $mod+Sys_Req exec "xscreenshot -m selection"
+
+# Screenshot (active window)
+bindsym $mod+Shift+Sys_Req exec "xscreenshot -m window"
 # Setup wallpaper
 exec --no-startup-id feh --bg-scale ~/.config/i3/images/dune-black.png
 
 # Gnome setting daemon
-exec --no-startup-id /usr/lib/gnome-settings-daemon
+#exec --no-startup-id /usr/lib/gnome-settings-daemon
 
 # Gnome Keyring daemon
-exec --no-startup-id /usr/bin/gnome-keyring-daemon
+#exec --no-startup-id /usr/bin/gnome-keyring-daemon
 
 # widget
 exec --no-startup-id nm-applet
