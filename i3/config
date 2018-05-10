@@ -230,7 +230,7 @@ bindsym $mod+r mode "resize"
 
 bar {
 #    mode invisible
-#    tray_output eDP1
+    tray_output eDP1
     position top
     status_command exec ~/bin/mybarista
     colors {
@@ -284,11 +284,7 @@ exec --no-startup-id /usr/lib/gnome-settings-daemon
 # Gnome Keyring daemon
 exec --no-startup-id /usr/bin/gnome-keyring-daemon
 
-# start polybar
-# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-
 # widget
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
-exec --no-startup-id seafile-applet
 exec --no-startup-id albert
