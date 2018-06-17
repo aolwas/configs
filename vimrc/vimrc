@@ -2,37 +2,39 @@
 "               http://github.com/grigio/vim-sublime
 " Best view with a 256 color terminal and Powerline fonts
 "
-set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim/
-call vundle#rc()
-Plugin 'gmarik/Vundle.vim'
+"
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-Plugin 'shougo/unite.vim'
-Plugin 'shougo/neocomplete.vim'
-Plugin 'shougo/unite-outline'
-Plugin 'shougo/vimfiler.vim'
-Plugin 'shougo/neossh.vim'
-Plugin 'shougo/vimproc.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/syntastic'
-Plugin 'BufClose.vim'
-Plugin 'Chiel92/vim-autoformat'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'ervandew/supertab'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'fatih/vim-go'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'rking/ag.vim'
+call plug#begin('~/.vim/plugged')
+Plug 'shougo/unite.vim'
+Plug 'shougo/neocomplete.vim'
+Plug 'shougo/unite-outline'
+Plug 'shougo/vimfiler.vim'
+Plug 'shougo/neossh.vim'
+Plug 'shougo/vimproc.vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/syntastic'
+Plug 'rbgrouleff/bclose.vim'
+Plug 'Chiel92/vim-autoformat'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'davidhalter/jedi-vim'
+Plug 'ervandew/supertab'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'fatih/vim-go'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug '~/.linuxbrew/opt/fzf'
 " Color Themes
-Plugin 'flazz/vim-colorschemes'
+Plug 'flazz/vim-colorschemes'
+call plug#end()
 colorscheme Tomorrow-Night
 
-""""""""
 filetype on
 filetype plugin on
 filetype indent on
