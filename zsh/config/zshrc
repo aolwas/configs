@@ -53,16 +53,18 @@ ZSH_THEME="spaceship"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmux docker go vagrant history rsync zsh-completions ol kubectl)
+plugins=(git docker go vagrant history rsync zsh-completions ol kubectl)
 
 source $ZSH/oh-my-zsh.sh
 
 
 # User configuration
 
+export TERM=xterm-256color
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
-export VAULT_ADDR='https://vault.objectif-libre.corp:8200'
+export VAULT_ADDR='https://vault.olibre.io:8200'
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -89,9 +91,9 @@ export VAULT_ADDR='https://vault.objectif-libre.corp:8200'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-#alias ssh="TERM=xterm-256color ssh"
+alias ssh="TERM=xterm-256color ssh"
 
-export PATH="$HOME/.linuxbrew/bin:$PATH"
+export PATH="$HOME/.linuxbrew/bin:$HOME/.linuxbrew/sbin:$PATH"
 export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
 export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 
