@@ -7,7 +7,7 @@ case `uname` in
   ;;
   Linux)
     # commands for Linux go here
-    export PATH=$HOME/.linuxbrew/bin:$PATH:$HOME/go/bin:$HOME/.cargo/bin
+    export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/go/bin:$HOME/.cargo/bin
   ;;
 esac
 
