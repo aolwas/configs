@@ -16,8 +16,8 @@ esac
 # export MANPATH="/usr/local/man:$MANPATH"
 
 HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -42,9 +42,19 @@ SAVEHIST=10000
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
+alias ezbench="podman run --rm --net host -it -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root -e AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id) -e AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key) docker.io/aolwas/ezbench"
 
-source <(antibody init)
-antibody bundle < ~/.zsh_plugins.txt
+alias antibody-update="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh"
+
+if [[ -z $container ]]; then
+  source ~/.zsh_plugins.sh
+else
+  # run inside podman container
+  echo "Inside podman container"
+  source <(antibody init)
+  antibody bundle < ~/.zsh_plugins.txt
+fi
+
 fpath=(
   /usr/local/share/zsh-completions
   /usr/local/share/zsh/site-functions
@@ -54,4 +64,6 @@ autoload -U +X compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
+if [ $command[kubectl] ]; then source <(kubectl completion zsh); fi
+
+eval "$(direnv hook zsh)"
