@@ -7,7 +7,11 @@ case `uname` in
   ;;
   Linux)
     # commands for Linux go here
-    export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/go/bin:$HOME/.cargo/bin
+    if [[ -z ${container} ]]; then
+    	export PATH=/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.devops-snippets
+    else
+    	export PATH=$PATH:$HOME/go/bin:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.devops-snippets
+    fi
   ;;
 esac
 
@@ -42,11 +46,12 @@ SAVEHIST=100000
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
-alias ezbench="podman run --rm --net host -it -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root -e AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id) -e AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key) docker.io/aolwas/ezbench"
-
+alias ezbench="podman run --rm --net host -it -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench"
+#-e AWS_ACCESS_KEY_ID=\$(aws configure get aws_access_key_id) -e AWS_SECRET_ACCESS_KEY=\$(aws configure get aws_secret_access_key) 
+alias aws-ecr-login="\$(aws ecr get-login --no-include-email --region eu-west-1)"
 alias antibody-update="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh"
 
-if [[ -z $container ]]; then
+if [[ -z ${container} ]]; then
   source ~/.zsh_plugins.sh
 else
   # run inside podman container
@@ -64,6 +69,6 @@ autoload -U +X compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-if [ $command[kubectl] ]; then source <(kubectl completion zsh); fi
+source <(kubectl completion zsh)
 
 eval "$(direnv hook zsh)"
