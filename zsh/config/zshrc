@@ -6,12 +6,20 @@ case `uname` in
     export PATH=$PATH:$HOME/go/bin:$HOME/.cargo/bin
   ;;
   Linux)
+    export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
+    export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar"
+    export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew"
+    export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
+    export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
     # commands for Linux go here
     if [[ -z ${container} ]]; then
     	export PATH=/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.devops-snippets
     else
     	export PATH=$PATH:$HOME/go/bin:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.devops-snippets
     fi
+    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
   ;;
 esac
 
@@ -46,7 +54,7 @@ SAVEHIST=100000
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
-alias ezbench="podman run --hostname ezbench --name ezbench --rm --net host -it -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench"
+alias ezbench="podman run --hostname ezbench --rm --net host -it -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench"
 #-e AWS_ACCESS_KEY_ID=\$(aws configure get aws_access_key_id) -e AWS_SECRET_ACCESS_KEY=\$(aws configure get aws_secret_access_key) 
 alias aws-ecr-login="\$(aws ecr get-login --no-include-email --region eu-west-1)"
 alias antibody-update="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh"
