@@ -1,3 +1,8 @@
+# init autocompletion.
+# should be load before asdf or other completion modules
+autoload -U +X compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 case `uname` in
@@ -13,13 +18,29 @@ case `uname` in
     export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
     # commands for Linux go here
     if [[ -z ${container} ]]; then
-    	export PATH=/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.devops-snippets
+    	export PATH=/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/go/bin:$HOME/.devops-snippets
+        . $HOME/.asdf/asdf.sh
+        . $HOME/.asdf/completions/asdf.bash
+        source $HOME/.asdf/installs/rust/stable/env
+
+	# >>> conda initialize >>>
+	# !! Contents within this block are managed by 'conda init' !!
+	__conda_setup="$('/home/aolwas/.asdf/installs/python/miniconda3-latest/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+	if [ $? -eq 0 ]; then
+    		eval "$__conda_setup"
+	else
+    		if [ -f "/home/aolwas/.asdf/installs/python/miniconda3-latest/etc/profile.d/conda.sh" ]; then
+        		. "/home/aolwas/.asdf/installs/python/miniconda3-latest/etc/profile.d/conda.sh"
+    		else
+        		export PATH="/home/aolwas/.asdf/installs/python/miniconda3-latest/bin:$PATH"
+    		fi
+	fi
+	unset __conda_setup
+	# <<< conda initialize <<<
     else
-    	export PATH=$PATH:$HOME/go/bin:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.devops-snippets
+    	export PATH=$PATH:$HOME/go/bin:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.devops-snippets
     fi
-    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
+
   ;;
 esac
 
@@ -75,10 +96,8 @@ fpath=(
   /usr/local/share/zsh/site-functions
   $fpath
 )
-autoload -U +X compinit && compinit
-autoload -U +X bashcompinit && bashcompinit
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-source <(kubectl completion zsh)
 
 eval "$(direnv hook zsh)"
+

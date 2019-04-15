@@ -1,2 +1,4 @@
 denysdovhan/spaceship-prompt
 felixr/docker-zsh-completion
+dbz/kube-aliases
+wfxr/forgit
