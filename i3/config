@@ -326,3 +326,5 @@ exec --no-startup-id feh --bg-scale ~/.config/i3/images/dune-black.png
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
 exec --no-startup-id albert
+exec --no-startup-id copyq
+
