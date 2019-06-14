@@ -7,11 +7,9 @@ autoload -U +X bashcompinit && bashcompinit
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 case `uname` in
   Darwin)
-    # commands for OS X go here
-    export PATH=$PATH:$HOME/go/bin:$HOME/.cargo/bin
-
     . $(brew --prefix asdf)/asdf.sh
     . $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
+    source $HOME/.asdf/installs/rust/stable/env
 
     # >>> conda initialize >>>
     # !! Contents within this block are managed by 'conda init' !!
