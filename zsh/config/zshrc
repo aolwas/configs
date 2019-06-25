@@ -34,7 +34,7 @@ case `uname` in
     export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
     # commands for Linux go here
     if [[ -z ${container} ]]; then
-    	export PATH=/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/go/bin:$HOME/.devops-snippets
+    	export PATH=/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/bin:$HOME/.devops-snippets
         . $HOME/.asdf/asdf.sh
         . $HOME/.asdf/completions/asdf.bash
         source $HOME/.asdf/installs/rust/stable/env
@@ -54,7 +54,7 @@ case `uname` in
 	unset __conda_setup
 	# <<< conda initialize <<<
     else
-    	export PATH=$PATH:$HOME/go/bin:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.devops-snippets
+    	export PATH=$PATH:$HOME/bin:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.devops-snippets
     fi
 
   ;;
@@ -69,14 +69,17 @@ HISTSIZE=100000
 SAVEHIST=100000
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+ export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+ if [[ -n $SSH_CONNECTION ]]; then
+   export EDITOR='vim'
+ else
+   export EDITOR='vim'
+ fi
+
+# Force Emacs mode
+bindkey -e
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -84,15 +87,9 @@ SAVEHIST=100000
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 alias ezbench="podman run --hostname ezbench --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench"
-#-e AWS_ACCESS_KEY_ID=\$(aws configure get aws_access_key_id) -e AWS_SECRET_ACCESS_KEY=\$(aws configure get aws_secret_access_key) 
 alias aws-ecr-login="\$(aws ecr get-login --no-include-email --region eu-west-1)"
 alias antibody-update="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh"
 
