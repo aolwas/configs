@@ -368,10 +368,11 @@ live_config_reload: true
 #   - (macOS) /bin/bash --login
 #   - (Linux) user login shell
 #   - (Windows) powershell
-#shell:
-#  program: tmux
-#  args:
-#    - -u
+shell:
+  program: /bin/zsh
+  args:
+    - -c
+    - tmux
 
 # Startup directory
 #
