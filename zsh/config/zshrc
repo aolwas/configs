@@ -9,7 +9,7 @@ case `uname` in
   Darwin)
     . $(brew --prefix asdf)/asdf.sh
     . $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
-    source $HOME/.asdf/installs/rust/stable/env
+    if [ -f "$HOME/.asdf/installs/rust/stable/env" ]; then . $HOME/.asdf/installs/rust/stable/env; fi
 
     # >>> conda initialize >>>
     # !! Contents within this block are managed by 'conda init' !!
@@ -36,9 +36,14 @@ case `uname` in
     if [[ -z ${container} ]]; then
 	# on host
     	export PATH=/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/bin:$HOME/.devops-snippets
-        . $HOME/.asdf/asdf.sh
-        . $HOME/.asdf/completions/asdf.bash
-        source $HOME/.asdf/installs/rust/stable/env
+	if [ -f "$HOME/.asdf/asdf.sh" ]; then
+	    . $HOME/.asdf/asdf.sh
+            . $HOME/.asdf/completions/asdf.bash
+	fi
+	if [ -f "$HOME/.asdf/installs/rust/stable/env" ]; then source $HOME/.asdf/installs/rust/stable/env; fi
+        if [[ "$(\asdf current java 2>&1)" =~ "^([-_.a-zA-Z0-9]+)[[:space:]]*\(set by.*$" ]]; then
+            export JAVA_HOME=$(\asdf where java ${match[1]})
+        fi
 
 	# >>> conda initialize >>>
 	# !! Contents within this block are managed by 'conda init' !!
