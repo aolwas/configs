@@ -17,7 +17,7 @@ font pango:monospace 9
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 9, FontAwesome 9
+font pango:DejaVu Sans Mono 9, FontAwesome 9
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -120,6 +120,9 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
+
+# toggle sticking
+bindsym $mod+Ctrl+space sticky toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
