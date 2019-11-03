@@ -10,9 +10,7 @@ case `uname` in
     . $(brew --prefix asdf)/asdf.sh
     . $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
     if [ -f "$HOME/.asdf/installs/rust/stable/env" ]; then . $HOME/.asdf/installs/rust/stable/env; fi
-    if [[ "$(\asdf current java 2>&1)" =~ "^([-_.a-zA-Z0-9]+)[[:space:]]*\(set by.*$" ]]; then
-      export JAVA_HOME=$(\asdf where java ${match[1]})
-    fi
+    . ~/.asdf/plugins/java/set-java-home.sh
 
     # >>> conda initialize >>>
     # !! Contents within this block are managed by 'conda init' !!
@@ -44,9 +42,7 @@ case `uname` in
             . $HOME/.asdf/completions/asdf.bash
 	fi
 	if [ -f "$HOME/.asdf/installs/rust/stable/env" ]; then source $HOME/.asdf/installs/rust/stable/env; fi
-  if [[ "$(\asdf current java 2>&1)" =~ "^([-_.a-zA-Z0-9]+)[[:space:]]*\(set by.*$" ]]; then
-    export JAVA_HOME=$(\asdf where java ${match[1]})
-  fi
+  . ~/.asdf/plugins/java/set-java-home.sh
 
 	# >>> conda initialize >>>
 	# !! Contents within this block are managed by 'conda init' !!
