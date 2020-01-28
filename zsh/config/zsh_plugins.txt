@@ -1,4 +1,3 @@
-denysdovhan/spaceship-prompt
 felixr/docker-zsh-completion
 dbz/kube-aliases
 kiurchv/asdf.plugin.zsh

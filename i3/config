@@ -41,10 +41,10 @@ set $cyan	#2AA198
 set $dark	#00252E
 
 # Fancy names for workspaces
-set $w1 1: www
-set $w2 2: term
-set $w3 3: code
-set $w4 4
+set $w1 1:  
+set $w2 2: 
+set $w3 3: 
+set $w4 4: 
 set $w5 5
 set $w6 6
 set $w7 7

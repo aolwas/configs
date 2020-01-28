@@ -1,0 +1,11 @@
+[hostname]
+ssh_only = false
+
+[kubernetes]
+disabled = false
+
+[python]
+symbol = "Py "
+
+[directory]
+truncate_to_repo = false

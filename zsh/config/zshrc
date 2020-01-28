@@ -42,7 +42,7 @@ case `uname` in
             . $HOME/.asdf/completions/asdf.bash
 	fi
 	if [ -f "$HOME/.asdf/installs/rust/stable/env" ]; then source $HOME/.asdf/installs/rust/stable/env; fi
-  . ~/.asdf/plugins/java/set-java-home.sh
+  	. ~/.asdf/plugins/java/set-java-home.sh
 
 	# >>> conda initialize >>>
 	# !! Contents within this block are managed by 'conda init' !!
@@ -120,6 +120,7 @@ fpath=(
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+eval "$(starship init zsh)"
 eval "$(direnv hook zsh)"
 
 export -U PATH
