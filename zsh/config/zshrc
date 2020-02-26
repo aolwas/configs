@@ -7,25 +7,6 @@ autoload -U +X bashcompinit && bashcompinit
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 case `uname` in
   Darwin)
-    . $(brew --prefix asdf)/asdf.sh
-    . $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
-    if [ -f "$HOME/.asdf/installs/rust/stable/env" ]; then . $HOME/.asdf/installs/rust/stable/env; fi
-    . ~/.asdf/plugins/java/set-java-home.sh
-
-    # >>> conda initialize >>>
-    # !! Contents within this block are managed by 'conda init' !!
-    __conda_setup="$('/Users/aolwas/.asdf/installs/python/miniconda3-latest/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-    if [ $? -eq 0 ]; then
-        eval "$__conda_setup"
-    else
-        if [ -f "/Users/aolwas/.asdf/installs/python/miniconda3-latest/etc/profile.d/conda.sh" ]; then
-            . "/Users/aolwas/.asdf/installs/python/miniconda3-latest/etc/profile.d/conda.sh"
-        else
-            export PATH="/Users/aolwas/.asdf/installs/python/miniconda3-latest/bin:$PATH"
-        fi
-    fi
-    unset __conda_setup
-    # <<< conda initialize <<<
   ;;
   Linux)
     export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
@@ -37,27 +18,21 @@ case `uname` in
     if [[ -z ${container} ]]; then
 	# on host
     	export PATH=/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/bin:$HOME/.devops-snippets
-	if [ -f "$HOME/.asdf/asdf.sh" ]; then
-	    . $HOME/.asdf/asdf.sh
-            . $HOME/.asdf/completions/asdf.bash
-	fi
-	if [ -f "$HOME/.asdf/installs/rust/stable/env" ]; then source $HOME/.asdf/installs/rust/stable/env; fi
-  	. ~/.asdf/plugins/java/set-java-home.sh
-
 	# >>> conda initialize >>>
 	# !! Contents within this block are managed by 'conda init' !!
-	__conda_setup="$('/home/aolwas/.asdf/installs/python/miniconda3-latest/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+	__conda_setup="$('/home/aolwas/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 	if [ $? -eq 0 ]; then
     		eval "$__conda_setup"
 	else
-    		if [ -f "/home/aolwas/.asdf/installs/python/miniconda3-latest/etc/profile.d/conda.sh" ]; then
-        		. "/home/aolwas/.asdf/installs/python/miniconda3-latest/etc/profile.d/conda.sh"
+    		if [ -f "/home/aolwas/miniconda3/etc/profile.d/conda.sh" ]; then
+        		. "/home/aolwas/miniconda3/etc/profile.d/conda.sh"
     		else
-        		export PATH="/home/aolwas/.asdf/installs/python/miniconda3-latest/bin:$PATH"
+        		export PATH="/home/aolwas/miniconda3/bin:$PATH"
     		fi
 	fi
 	unset __conda_setup
 	# <<< conda initialize <<<
+
     else
         # in container
     	export PATH=$PATH:$HOME/bin:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.devops-snippets
@@ -99,7 +74,10 @@ bindkey -e
 alias ezbench6="podman run --hostname ezbench6 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:6"
 alias ezbench7="podman run --hostname ezbench7 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:7"
 alias aws-ecr-login="\$(aws ecr get-login --no-include-email --region eu-west-1)"
+alias aws-hub-creds-update="kubectl -n dataops-jupyterhub cp $HOME.aws/credentials jupyter-mcottret:/home/jovyan/.aws/credentials"
 alias antibody-update="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh"
+alias git-set-pro-user="git config user.name 'Maxime Cottret' && git config user.email maxime.cottret@easymile.com"
+alias git-set-perso-user="git config user.name 'Maxime Cottret' && git config user.email maxime.cottret@gmail.com"
 
 if [[ -z ${container} ]]; then
   source ~/.zsh_plugins.sh
@@ -124,3 +102,4 @@ eval "$(starship init zsh)"
 eval "$(direnv hook zsh)"
 
 export -U PATH
+
