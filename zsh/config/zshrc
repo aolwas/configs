@@ -17,7 +17,7 @@ case `uname` in
     # commands for Linux go here
     if [[ -z ${container} ]]; then
 	# on host
-    	export PATH=/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/bin:$HOME/.devops-snippets
+    	export PATH=/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/bin:$HOME/.cargo/bin:$HOME/.devops-snippets
 	# >>> conda initialize >>>
 	# !! Contents within this block are managed by 'conda init' !!
 	__conda_setup="$('/home/aolwas/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -35,7 +35,7 @@ case `uname` in
 
     else
         # in container
-    	export PATH=$PATH:$HOME/bin:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.devops-snippets
+    	export PATH=$PATH:$HOME/bin:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.devops-snippets
     fi
 
   ;;
@@ -71,14 +71,17 @@ bindkey -e
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
-alias ezbench6="podman run --hostname ezbench6 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:6"
 alias ezbench7="podman run --hostname ezbench7 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:7"
-alias aws-ecr-login="\$(aws ecr get-login --no-include-email --region eu-west-1)"
-alias aws-hub-creds-update="kubectl -n dataops-jupyterhub cp $HOME.aws/credentials jupyter-mcottret:/home/jovyan/.aws/credentials"
+alias aws-ecr-login="aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
+alias aws-hub-creds-update="kubectl -n dataops-jupyterhub cp $HOME/.aws/credentials jupyter-mcottret:/home/jovyan/.aws/credentials"
 alias antibody-update="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh"
 alias git-set-pro-user="git config user.name 'Maxime Cottret' && git config user.email maxime.cottret@easymile.com"
 alias git-set-perso-user="git config user.name 'Maxime Cottret' && git config user.email maxime.cottret@gmail.com"
-
+alias t="tmux attach -t main || tmux new -s main"
+alias reload-zsh="exec zsh"
+alias h2lens="PATH=$HOME/bin:$PATH lens"
+alias helm2='PATH="/home/linuxbrew/.linuxbrew/opt/helm@2/bin:$PATH" helm'
+alias ezjupyter='docker container run --rm -it -p 8888:8888 -p 4040:4040 -p 8787:8787 -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -v $HOME/Projects/EasyMile/DataManagement:/home/jovyan/DataManagement 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/jupyter-spark:${JUPYTER_VERSION:=latest}'
 if [[ -z ${container} ]]; then
   source ~/.zsh_plugins.sh
 else

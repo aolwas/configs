@@ -360,11 +360,11 @@ live_config_reload: true
 #   - (macOS) /bin/bash --login
 #   - (Linux) user login shell
 #   - (Windows) powershell
-shell:
-  program: /bin/zsh
-  args:
-    - -c
-    - tmux
+#shell:
+#  program: /bin/zsh
+#  args:
+#    - -c
+#    - $HOME/bin/tmuxed
 
 # Startup directory
 #

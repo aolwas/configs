@@ -41,7 +41,7 @@ set $cyan	#2AA198
 set $dark	#00252E
 
 # Fancy names for workspaces
-set $w1 1:  
+set $w1 1: 
 set $w2 2: 
 set $w3 3: 
 set $w4 4: 
@@ -275,21 +275,23 @@ for_window [window_role="pop-up"] floating enable,move absolute center,move work
 # remove borders
 for_window [class="^.*"] border pixel 2
 
-### System
-#set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) poweroff
-#mode "$mode_system" {
-#	bindsym l exec --no-startup-id xlock, mode "default"
-#	bindsym e exec --no-startup-id i3-msg exit, mode "default"
-#	bindsym s exec --no-startup-id "xlock -b; system-suspend",   mode "default"
-#	bindsym h exec --no-startup-id "xlock -b; system-hibernate", mode "default"
-#	bindsym r exec --no-startup-id system-reboot,    mode "default"
-#	bindsym p exec --no-startup-id system-shutdown,  mode "default"
 #
-#	# Back to normal: Enter or Escape
-#	bindsym Return mode "default"
-#	bindsym Escape mode "default"
-#}
-#bindsym $mod+Shift+x mode "$mode_system"
+# System
+#
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) poweroff
+mode "$mode_system" {
+       bindsym l exec --no-startup-id swaylock, mode "default"
+       bindsym e exec --no-startup-id i3-msg exit, mode "default"
+       bindsym s exec --no-startup-id "swaylock -f; systemctl suspend",   mode "default"
+       bindsym h exec --no-startup-id "swaylock -f; systemctl hibernate", mode "default"
+       bindsym r exec --no-startup-id systemctl reboot,    mode "default"
+       bindsym p exec --no-startup-id systemctl poweroff,  mode "default"
+
+       # Back to normal: Enter or Escape
+       bindsym Return mode "default"
+       bindsym Escape mode "default"
+}
+bindsym $mod+Shift+x mode "$mode_system"
 
 ### Hardware
 
@@ -326,8 +328,6 @@ exec --no-startup-id feh --bg-scale ~/.config/i3/images/dune-black.png
 #exec --no-startup-id ibus-daemon --xim -d -r
 
 # widget
-exec --no-startup-id nm-applet
-exec --no-startup-id volumeicon
-exec --no-startup-id ulauncher
+exec --no-startup-id rofi
 exec --no-startup-id copyq
 
