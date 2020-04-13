@@ -19,7 +19,10 @@ set $term alacritty
 # Note: it's recommended that you pass the final command to sway
 #set $menu dmenu_path | dmenu | xargs swaymsg exec --
 set $menu rofi -show drun -theme sidebar
-#set $menu ulauncher-toggle
+#set $menu rofi -m $(swaymsg -t get_outputs | jq 'map(select(.active) | .focused) | index(true)') -theme sidebar -show drun -run-command 'swaymsg exec -- {cmd}'
+set $screenshot grim ~/Pictures/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
+set $screenclip slurp | grim -g - ~/Pictures/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
+
 
 ### Output configuration
 #
@@ -76,6 +79,9 @@ input "type:keyboard" {
 #
     # Start a terminal
     bindsym $mod+Return exec $term
+
+    # screenshot
+    bindsym $mod+Print exec $screenclip
 
     # Kill focused window
     bindsym $mod+q kill
