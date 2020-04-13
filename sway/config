@@ -65,7 +65,7 @@ input "type:touchpad" {
 
 input "type:keyboard" {
     xkb_layout "fr"
-} 
+}
 #
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
@@ -301,7 +301,7 @@ bindsym $mod+Shift+x mode "$mode_system"
 bar {
       font pango:DejaVu Sans Mono, FontAwesome 9
       position top
-      status_command /usr/local/bin/i3status-rs ~/.config/i3/status.toml
+      status_command /usr/local/bin/i3status-rs ~/.config/i3status-rust/status.toml
       colors {
             #statusline #999999
             #background  $black
