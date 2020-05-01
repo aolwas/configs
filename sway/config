@@ -337,6 +337,7 @@ bar {
 }
 
 # widgets
+exec --no-startup-id mako
 exec --no-startup-id copyq
 
 include /etc/sway/config.d/*
