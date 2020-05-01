@@ -32,6 +32,10 @@ case `uname` in
 	fi
 	unset __conda_setup
 	# <<< conda initialize <<<
+	fpath=(
+  		/home/linuxbrew/.linuxbrew/share/zsh/site-functions
+  		$fpath
+	)
 
     else
         # in container
@@ -72,6 +76,7 @@ bindkey -e
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 alias ezbench7="podman run --hostname ezbench7 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:7"
+alias ezbench11="podman run --hostname ezbench11 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:11"
 alias aws-ecr-login="aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
 alias aws-hub-creds-update="kubectl -n dataops-jupyterhub cp $HOME/.aws/credentials jupyter-mcottret:/home/jovyan/.aws/credentials"
 alias antibody-update="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh"
@@ -81,7 +86,16 @@ alias t="tmux attach -t main || tmux new -s main"
 alias reload-zsh="exec zsh"
 alias h2lens="PATH=$HOME/bin:$PATH lens"
 alias helm2='PATH="/home/linuxbrew/.linuxbrew/opt/helm@2/bin:$PATH" helm'
-alias ezjupyter='docker container run --rm -it -p 8888:8888 -p 4040:4040 -p 8787:8787 -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -v $HOME/Projects/EasyMile/DataManagement:/home/jovyan/DataManagement 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/jupyter-spark:${JUPYTER_VERSION:=latest}'
+function ezjupyter() {
+	tag="latest"
+	if [ "$1" != "" ]
+	then
+	  tag="$1"
+	fi
+	docker container run --rm -it -p 8888:8888 -p 4040:4040 -p 8787:8787 -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} -v ${HOME}/Projects/EasyMile/DataManagement:/home/jovyan/DataManagement 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/jupyter-spark:${tag}
+}
+
+# antibody plugin management
 if [[ -z ${container} ]]; then
   source ~/.zsh_plugins.sh
 else
