@@ -24,7 +24,7 @@ set $menu rofi -show drun -theme sidebar
 #set $screenclip slurp | grim -g - ~/Pictures/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
 set $screenshot grim - | wl-copy
 set $screenclip grim -g "$(slurp)" - | wl-copy
-
+set $lock swaylock -i /home/aolwas/.config/sway/gits-logo1.png
 
 ### Output configuration
 #
@@ -48,11 +48,11 @@ output eDP-1 resolution 1920x1080 position 0,768
 #
 # Example configuration:
 #
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * dpms off"' \
-#               resume 'swaymsg "output * dpms on"' \
-#          before-sleep 'swaylock -f -c 000000'
+exec swayidle -w \
+         timeout 300 '$lock -f' \
+         timeout 600 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on"' \
+         before-sleep '$lock -f'
 
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -92,14 +92,6 @@ input "type:keyboard" {
 
     # Start your launcher
     bindsym $mod+d exec $menu
-    #bindsym $mod+d exec --no-startup-id appsmenu
-    #bindsym $mod+Shift+o exec --no-startup-id i3keybindingsmenu
-    #bindsym $mod+l exec --no-startup-id i3layoutmenu
-    #bindsym $mod+m exec --no-startup-id mpdmenu
-    #bindsym $mod+n exec --no-startup-id networkmenu
-    #bindsym $mod+Shift+v exec --no-startup-id nmvpnmenu
-    #bindsym $mod+p exec --no-startup-id powermenu
-    #bindsym $mod+o exec --no-startup-id maimmenu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -289,10 +281,10 @@ bindsym $mod+r mode "resize"
 #
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) poweroff
 mode "$mode_system" {
-       bindsym l exec --no-startup-id swaylock -i ~/Pictures/gits-logo1.png, mode "default"
+       bindsym l exec --no-startup-id $lock, mode "default"
        bindsym e exec --no-startup-id i3-msg exit, mode "default"
-       bindsym s exec --no-startup-id "swaylock -i ~/Pictures/gits-logo1.png -f; systemctl suspend",   mode "default"
-       bindsym h exec --no-startup-id "swaylock -i ~/Pictures/gits-logo1.png -f; systemctl hibernate", mode "default"
+       bindsym s exec --no-startup-id "$lock -f; systemctl suspend",   mode "default"
+       bindsym h exec --no-startup-id "$lock -f; systemctl hibernate", mode "default"
        bindsym r exec --no-startup-id systemctl reboot,    mode "default"
        bindsym p exec --no-startup-id systemctl poweroff,  mode "default"
 
