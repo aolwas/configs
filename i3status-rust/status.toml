@@ -1,11 +1,18 @@
 theme = "plain"
 icons = "awesome"
 
+#[[block]]
+#block = "music"
+
 [[block]]
-block = "music"
+block = "focused_window"
 
 [[block]]
 block = "sound"
+
+[[block]]
+block = "backlight"
+device = "intel_backlight"
 
 [[block]]
 block = "disk_space"
@@ -41,6 +48,12 @@ signal_strength = true
 [[block]]
 block = "net"
 device = "enp0s31f6"
+
+[[block]]
+block = "net"
+device = "tun0"
+hide_missing = true
+hide_inactive =true
 
 [[block]]
 block = "battery"
