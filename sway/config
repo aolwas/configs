@@ -19,6 +19,7 @@ set $term alacritty
 # Note: it's recommended that you pass the final command to sway
 #set $menu dmenu_path | dmenu | xargs swaymsg exec --
 set $menu rofi -show drun -theme sidebar
+set $nmmenu /home/aolwas/bin/networkmanager_dmenu
 #set $menu rofi -m $(swaymsg -t get_outputs | jq 'map(select(.active) | .focused) | index(true)') -theme sidebar -show drun -run-command 'swaymsg exec -- {cmd}'
 #set $screenshot grim ~/Pictures/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
 #set $screenclip slurp | grim -g - ~/Pictures/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
@@ -84,14 +85,18 @@ input "type:keyboard" {
     bindsym $mod+Return exec $term
 
     # screenshot
-    bindsym $mod+c exec $screenshot
-    bindsym $mod+Shift+c exec $screenclip
+    bindsym $mod+p exec $screenshot
+    bindsym $mod+Shift+p exec $screenclip
 
     # Kill focused window
     bindsym $mod+q kill
 
     # Start your launcher
     bindsym $mod+d exec $menu
+    bindsym $mod+Shift+d exec $nmmenu
+
+    # Copyq
+    bindsym $mod+c exec /home/aolwas/bin/rofi-copyq
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
