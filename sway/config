@@ -284,10 +284,11 @@ bindsym $mod+r mode "resize"
 #
 # System
 #
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) poweroff
+set $mode_system System (c) reload (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) poweroff
 mode "$mode_system" {
+       bindsym c reload
        bindsym l exec --no-startup-id $lock, mode "default"
-       bindsym e exec --no-startup-id i3-msg exit, mode "default"
+       bindsym e exec --no-startup-id swaymsg exit, mode "default"
        bindsym s exec --no-startup-id "$lock -f; systemctl suspend",   mode "default"
        bindsym h exec --no-startup-id "$lock -f; systemctl hibernate", mode "default"
        bindsym r exec --no-startup-id systemctl reboot,    mode "default"
@@ -317,24 +318,28 @@ bindsym $mod+Shift+x mode "$mode_system"
 #    }
 #}
 
-bar {
-      font pango:DejaVu Sans Mono, FontAwesome 9
-      position top
-      status_command /usr/local/bin/i3status-rs ~/.config/i3status-rust/status.toml
-      colors {
-            #statusline #999999
-            #background  $black
+#bar {
+#      font pango:DejaVu Sans Mono, FontAwesome 9
+#      position top
+#      status_command /usr/local/bin/i3status-rs ~/.config/i3status-rust/status.toml
+#      colors {
+#            #statusline #999999
+#            #background  $black
+#
+#            # Colors            border      backgr.     text
+#            #focused_workspace   $orange         $darkorange             $white
+#            #active_workspace   #073642         #073642         #696f89
+#            #inactive_workspace #073642         #073642     $white
+#            #urgent_workspace   $orange         $orange         $dark
+#      }
+#}
 
-            # Colors            border      backgr.     text
-            #focused_workspace   $orange         $darkorange             $white
-            #active_workspace   #073642         #073642         #696f89
-            #inactive_workspace #073642         #073642     $white
-            #urgent_workspace   $orange         $orange         $dark
-      }
+bar {
+    swaybar_command waybar
 }
 
 # widgets
-exec --no-startup-id mako
-exec --no-startup-id copyq
+exec mako
+exec copyq
 
 include /etc/sway/config.d/*
