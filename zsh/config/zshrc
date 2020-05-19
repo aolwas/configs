@@ -75,7 +75,6 @@ bindkey -e
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
-alias ezbench7="podman run --hostname ezbench7 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:7"
 alias ezbench11="podman run --hostname ezbench11 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:11"
 alias aws-ecr-login="aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
 alias aws-hub-creds-update="kubectl -n dataops-jupyterhub cp $HOME/.aws/credentials jupyter-mcottret:/home/jovyan/.aws/credentials"
@@ -84,8 +83,6 @@ alias git-set-pro-user="git config user.name 'Maxime Cottret' && git config user
 alias git-set-perso-user="git config user.name 'Maxime Cottret' && git config user.email maxime.cottret@gmail.com"
 alias t="tmux attach -t main || tmux new -s main"
 alias reload-zsh="exec zsh"
-alias h2lens="PATH=$HOME/bin:$PATH lens"
-alias helm2='PATH="/home/linuxbrew/.linuxbrew/opt/helm@2/bin:$PATH" helm'
 function ezjupyter() {
 	tag="latest"
 	if [ "$1" != "" ]
