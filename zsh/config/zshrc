@@ -82,6 +82,7 @@ alias antibody-update="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh"
 alias git-set-pro-user="git config user.name 'Maxime Cottret' && git config user.email maxime.cottret@easymile.com"
 alias git-set-perso-user="git config user.name 'Maxime Cottret' && git config user.email maxime.cottret@gmail.com"
 alias t="tmux attach -t main || tmux new -s main"
+alias microk8s="PATH=$PATH:/snap/bin microk8s"
 alias reload-zsh="exec zsh"
 function ezjupyter() {
 	tag="latest"
