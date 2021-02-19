@@ -1,7 +1,18 @@
 # init autocompletion.
-# should be load before asdf or other completion modules
-autoload -U +X compinit && compinit
-autoload -U +X bashcompinit && bashcompinit
+autoload -U compinit
+compinit
+#zmodload -i zsh/complist
+#setopt hash_list_all            # hash everything before completion
+#setopt always_to_end            # when completing from the middle of a word, move the cursor to the end of the word
+#setopt complete_in_word 	# allow completion from within a word/phrase
+#setopt correct                  # spelling correction for commands
+#setopt list_ambiguous           # complete as much	completion until it gets ambiguous.
+#zstyle ':completion::complete:*' use-cache on               # completion caching, use rehash to clear
+#zstyle ':completion:*' cache-path ~/.zsh/cache              # cache path
+#zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # ignore case
+#zstyle ':completion:*' menu select=2                        # menu if nb items > 2
+#zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}       # colorz !
+#zstyle ':completion:*::::' completer _expand _complete _ignored _approximate # list of completers to use
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -11,13 +22,13 @@ case `uname` in
   Linux)
     export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
     export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar"
-    export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew"
-    export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
-    export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
+    export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew"
+    export MANPATH="/home/linuxbrew/.linuxbrew/share/man:${MANPATH+:MANPATH}"
+    export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}"
     # commands for Linux go here
     if [[ -z ${container} ]]; then
 	# on host
-    	export PATH=/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH:$HOME/bin:$HOME/.cargo/bin:$HOME/.devops-snippets
+    	export PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH:/$HOME/bin:$HOME/.cargo/bin:$HOME/.devops-snippets:${HOME}/.krew/bin
 	# >>> conda initialize >>>
 	# !! Contents within this block are managed by 'conda init' !!
 	__conda_setup="$('/home/aolwas/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -25,9 +36,9 @@ case `uname` in
     		eval "$__conda_setup"
 	else
     		if [ -f "/home/aolwas/miniconda3/etc/profile.d/conda.sh" ]; then
-        		. "/home/aolwas/miniconda3/etc/profile.d/conda.sh"
+# . "/home/aolwas/miniconda3/etc/profile.d/conda.sh"  # commented out by conda initialize
     		else
-        		export PATH="/home/aolwas/miniconda3/bin:$PATH"
+# export PATH="/home/aolwas/miniconda3/bin:$PATH"  # commented out by conda initialize
     		fi
 	fi
 	unset __conda_setup
@@ -39,16 +50,18 @@ case `uname` in
 
     else
         # in container
-    	export PATH=$PATH:$HOME/bin:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.devops-snippets
+        echo "Inside container"
+	export PATH=$PATH:$HOME/bin:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$HOME/.devops-snippets:${HOME}/.krew/bin
+	fpath=(
+  		$fpath
+  		/home/linuxbrew/.linuxbrew/share/zsh/site-functions
+	)
     fi
 
   ;;
 esac
 
 # User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
@@ -75,33 +88,31 @@ bindkey -e
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
-alias ezbench11="podman run --hostname ezbench11 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:11"
-alias aws-ecr-login="aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
+## kubernetes alias
+alias k="kubectl"
+alias kctx="kubectl ctx"
+alias helm2="/home/linuxbrew/.linuxbrew/opt/helm@2/bin/helm"
+## Misc
+alias ezbench13="podman run --hostname podman-ezbench13 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:13"
+alias forklift-encrypt13="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:13.2.7 ansible-vault encrypt_string"
+alias docker-ecr-login="aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
+alias podman-ecr-login="aws ecr get-login-password --region eu-west-1 | podman login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
 alias aws-hub-creds-update="kubectl -n dataops-jupyterhub cp $HOME/.aws/credentials jupyter-mcottret:/home/jovyan/.aws/credentials"
-alias antibody-update="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh"
 alias git-set-pro-user="git config user.name 'Maxime Cottret' && git config user.email maxime.cottret@easymile.com"
 alias git-set-perso-user="git config user.name 'Maxime Cottret' && git config user.email maxime.cottret@gmail.com"
 alias t="tmux attach -t main || tmux new -s main"
-alias microk8s="PATH=$PATH:/snap/bin microk8s"
+alias cfgsway="vim $HOME/.config/sway/config"
 alias reload-zsh="exec zsh"
+alias dw="argo -n dataops-workflows"
+alias brew-deps='brew leaves | xargs brew deps --installed --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
 function ezjupyter() {
 	tag="latest"
 	if [ "$1" != "" ]
 	then
 	  tag="$1"
 	fi
-	docker container run --rm -it -p 8888:8888 -p 4040:4040 -p 8787:8787 -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} -v ${HOME}/Projects/EasyMile/DataManagement:/home/jovyan/DataManagement 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/jupyter-spark:${tag}
+	docker container run --rm -it --network host -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} -e JUPYTER_ENABLE_LAB=yes -v ${HOME}/Projects/EasyMile/DataManagement:/home/jovyan/DataManagement 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/jupyter-spark:${tag}
 }
-
-# antibody plugin management
-if [[ -z ${container} ]]; then
-  source ~/.zsh_plugins.sh
-else
-  # run inside podman container
-  echo "Inside podman container"
-  source <(antibody init)
-  antibody bundle < ~/.zsh_plugins.txt
-fi
 
 export SPACESHIP_HOST_SHOW="always"
 
@@ -113,8 +124,13 @@ fpath=(
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-eval "$(starship init zsh)"
-eval "$(direnv hook zsh)"
+[ -x "$(whence -p 'kubectl')" ] && source <(kubectl completion zsh)
+
+[ -x "$(whence -p 'starship')" ] && eval "$(starship init zsh)"
+[ -x "$(whence -p 'direnv')" ] && eval "$(direnv hook zsh)"
+
+[ -x "$(whence -p 'scalaenv')" ] && eval "$(scalaenv init -)"
+[ -x "$(whence -p 'sbtenv')" ] && eval "$(sbtenv init -)"
 
 export -U PATH
 
