@@ -4,6 +4,10 @@
 #
 # Read `man 5 sway` for a complete reference.
 
+### services
+exec mako
+exec wl-paste -t text --watch clipman store --max-items=60
+
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -38,12 +42,12 @@ output "*" bg /home/aolwas/.config/sway/gits-logo1.png fill
 # Example configuration:
 #
 # home configuration
-output HDMI-A-1 scale 2
-output HDMI-A-1 resolution 3840x2160 position 0,0
-output eDP-1 resolution 1920x1080 position 0,1080
+#output HDMI-A-1 scale 2
+#output HDMI-A-1 resolution 3840x2160 position 0,0
+#output eDP-1 resolution 1920x1080 position 0,1080
 # work configuration
-#output HDMI-A-1 resolution 1920x1200 position 0,0
-#"output eDP-1 resolution 1920x1080 position 0,1200
+output HDMI-A-1 resolution 1920x1200 position 0,0
+output eDP-1 resolution 1920x1080 position 0,1200
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -102,8 +106,8 @@ input "type:keyboard" {
     bindsym $mod+d exec $menu
     bindsym $mod+Shift+d exec $nmmenu
 
-    # Copyq
-    bindsym $mod+c exec copyq toggle
+    # clipman
+    bindsym $mod+c exec clipman pick -t wofi --max-items=30
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -346,9 +350,5 @@ bindsym $mod+Shift+x mode "$mode_system"
 bar {
     swaybar_command waybar
 }
-
-# widgets
-exec mako
-# exec copyq
 
 include /etc/sway/config.d/*

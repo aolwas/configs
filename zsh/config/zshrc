@@ -28,17 +28,17 @@ case `uname` in
     # commands for Linux go here
     if [[ -z ${container} ]]; then
 	# on host
-    	export PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH:/$HOME/bin:$HOME/.cargo/bin:$HOME/.devops-snippets:${HOME}/.krew/bin
+    	export PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH:$HOME/bin:$HOME/.cargo/bin:$HOME/.devops-snippets:$HOME/.krew/bin
 	# >>> conda initialize >>>
 	# !! Contents within this block are managed by 'conda init' !!
-	__conda_setup="$('/home/aolwas/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+	__conda_setup="$('/home/aolwas/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 	if [ $? -eq 0 ]; then
     		eval "$__conda_setup"
 	else
-    		if [ -f "/home/aolwas/miniconda3/etc/profile.d/conda.sh" ]; then
-# . "/home/aolwas/miniconda3/etc/profile.d/conda.sh"  # commented out by conda initialize
+    		if [ -f "/home/aolwas/mambaforge/etc/profile.d/conda.sh" ]; then
+# . "/home/aolwas/mambaforge/etc/profile.d/conda.sh"  # commented out by conda initialize
     		else
-# export PATH="/home/aolwas/miniconda3/bin:$PATH"  # commented out by conda initialize
+# export PATH="/home/aolwas/mambaforge/bin:$PATH"  # commented out by conda initialize
     		fi
 	fi
 	unset __conda_setup
@@ -51,7 +51,7 @@ case `uname` in
     else
         # in container
         echo "Inside container"
-	export PATH=$PATH:$HOME/bin:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$HOME/.devops-snippets:${HOME}/.krew/bin
+	export PATH=$PATH:$HOME/bin:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$HOME/.devops-snippets:$HOME/.krew/bin
 	fpath=(
   		$fpath
   		/home/linuxbrew/.linuxbrew/share/zsh/site-functions
@@ -90,11 +90,15 @@ bindkey -e
 # alias zshconfig="mate ~/.zshrc"
 ## kubernetes alias
 alias k="kubectl"
-alias kctx="kubectl ctx"
+alias kctx="kubectx"
 alias helm2="/home/linuxbrew/.linuxbrew/opt/helm@2/bin/helm"
+function argo-forward() {
+    pod_name=$(kubectl get pod -n dataops-workflows --selector=app=dataops-argo-server --output=jsonpath={.items..metadata.name})
+    kubectl port-forward -n dataops-workflows ${pod_name} 2746:2746
+}
 ## Misc
 alias ezbench13="podman run --hostname podman-ezbench13 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:13"
-alias forklift-encrypt13="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:13.2.7 ansible-vault encrypt_string"
+alias forklift-encrypt13="podman run --rm -it -v $PWD/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:13.2.7 ansible-vault encrypt_string"
 alias docker-ecr-login="aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
 alias podman-ecr-login="aws ecr get-login-password --region eu-west-1 | podman login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
 alias aws-hub-creds-update="kubectl -n dataops-jupyterhub cp $HOME/.aws/credentials jupyter-mcottret:/home/jovyan/.aws/credentials"
@@ -105,13 +109,14 @@ alias cfgsway="vim $HOME/.config/sway/config"
 alias reload-zsh="exec zsh"
 alias dw="argo -n dataops-workflows"
 alias brew-deps='brew leaves | xargs brew deps --installed --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
+alias chromium-wayland="flatpak run org.chromium.Chromium --enable-features=UseOzonePlatform --ozone-platform=wayland"
 function ezjupyter() {
-	tag="latest"
+	tag="2.3.0"
 	if [ "$1" != "" ]
 	then
 	  tag="$1"
 	fi
-	docker container run --rm -it --network host -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} -e JUPYTER_ENABLE_LAB=yes -v ${HOME}/Projects/EasyMile/DataManagement:/home/jovyan/DataManagement 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/jupyter-spark:${tag}
+	docker container run --rm -it --network host -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} -e JUPYTER_ENABLE_LAB=yes -v ${HOME}:/home/jovyan/local 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/jupyter-spark:${tag}
 }
 
 export SPACESHIP_HOST_SHOW="always"
