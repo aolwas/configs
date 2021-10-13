@@ -24,13 +24,14 @@ set $term /home/aolwas/.cargo/bin/alacritty
 # Note: it's recommended that you pass the final command to sway
 #set $menu dmenu_path | dmenu | xargs swaymsg exec --
 set $menu wofi --show drun | xargs swaymsg exec --
+set $nmmenu /home/aolwas/.config/wofi/nmcli-wofi
 #set $menu rofi -m $(swaymsg -t get_outputs | jq 'map(select(.active) | .focused) | index(true)') -theme sidebar -show drun -run-command 'swaymsg exec -- {cmd}'
 #set $screenshot grim ~/Pictures/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
 #set $screenclip slurp | grim -g - ~/Pictures/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
 #set $screenshot grim - | wl-copy
 #set $screenclip grim -g "$(slurp)" - | wl-copy
 set $grimshot /usr/bin/grimshot
-set $lock swaylock -i /home/aolwas/.config/sway/gits-logo1.png
+set $lock swaylock -i /home/aolwas/.config/sway/gits-logo1.png -f
 
 ### Output configuration
 #
@@ -42,12 +43,12 @@ output "*" bg /home/aolwas/.config/sway/gits-logo1.png fill
 # Example configuration:
 #
 # home configuration
-#output HDMI-A-1 scale 2
-#output HDMI-A-1 resolution 3840x2160 position 0,0
-#output eDP-1 resolution 1920x1080 position 0,1080
+output HDMI-A-1 scale 2
+output HDMI-A-1 resolution 3840x2160 position 0,0
+output eDP-1 resolution 1920x1080 position 0,1080
 # work configuration
-output HDMI-A-1 resolution 1920x1200 position 0,0
-output eDP-1 resolution 1920x1080 position 0,1200
+#output HDMI-A-1 resolution 1920x1200 position 0,0
+#output eDP-1 resolution 1920x1080 position 0,1200
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -133,14 +134,14 @@ input "type:keyboard" {
     bindsym Control+space exec makoctl dismiss
     bindsym Control+Shift+space exec makoctl dismiss -a
     # # grave == backtick
-    bindsym Control+apostrophe exec makoctl restore 
+    bindsym Control+apostrophe exec makoctl restore
 
     # volume / brightness / media controls
     bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
     bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
     bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
     bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-    bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+    bindsym XF86MonBrightnessDown exec brightnessctl set -5%
     bindsym XF86MonBrightnessUp exec brightnessctl set +5%
     bindsym XF86AudioPlay exec playerctl play-pause
     bindsym XF86AudioNext exec playerctl next
@@ -313,7 +314,7 @@ bindsym $mod+r mode "resize"
 #
 # System
 #
-set $mode_system System (c) reload (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) poweroff
+set $mode_system System (c) reload, (l) lock, (w) waylock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) poweroff
 mode "$mode_system" {
        bindsym c reload
        bindsym l exec --no-startup-id $lock, mode "default"
@@ -352,3 +353,4 @@ bar {
 }
 
 include /etc/sway/config.d/*
+

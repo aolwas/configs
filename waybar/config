@@ -5,7 +5,7 @@
     // "width": 1280, // Waybar width
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": [],
+    "modules-center": ["custom/vpn"],
     "modules-right": ["pulseaudio", "network", "cpu", "memory", "temperature", "backlight", "sway/language", "battery", "battery#bat2", "custom/clock", "tray"],
     // Modules configuration
     // "sway/workspaces": {
@@ -68,7 +68,7 @@
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
     },
-   "custom/clock": {
+    "custom/clock": {
       "exec": "date '+%Y-%m-%d %H:%M'",
       "format": "{icon} {}",
       "format-icons": {
@@ -120,6 +120,13 @@
         "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "Disconnected ⚠",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
+    },
+    "custom/vpn": {
+    "format": "VPN ",
+    "exec": "echo '{\"class\": \"connected\"}'",
+    "exec-if": "test -d /proc/sys/net/ipv4/conf/tun0",
+    "return-type": "json",
+    "interval": 5
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
