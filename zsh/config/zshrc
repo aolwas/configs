@@ -28,7 +28,7 @@ case `uname` in
     # commands for Linux go here
     if [[ -z ${container} ]]; then
 	# on host
-    	export PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH:$HOME/bin:$HOME/.cargo/bin:$HOME/.devops-snippets:$HOME/.krew/bin
+    	export PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH:$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.devops-snippets:$HOME/.krew/bin
 	# >>> conda initialize >>>
 	# !! Contents within this block are managed by 'conda init' !!
 	__conda_setup="$('/home/aolwas/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -51,7 +51,7 @@ case `uname` in
     else
         # in container
         echo "Inside container"
-	export PATH=$PATH:$HOME/bin:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$HOME/.devops-snippets:$HOME/.krew/bin
+	export PATH=$PATH:$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$HOME/.devops-snippets:$HOME/.krew/bin
 	fpath=(
   		$fpath
   		/home/linuxbrew/.linuxbrew/share/zsh/site-functions
@@ -93,16 +93,13 @@ alias k="kubectl"
 alias kol="kubectl oidc-login"
 alias kctx="kubectx"
 alias helm2="/home/linuxbrew/.linuxbrew/opt/helm@2/bin/helm"
-function argo-forward() {
-    pod_name=$(kubectl get pod -n dataops-workflows --selector=app=dataops-argo-server --output=jsonpath={.items..metadata.name})
-    kubectl port-forward -n dataops-workflows ${pod_name} 2746:2746
-}
+alias argo-forward="kubectl port-forward -n dataops-workflows svc/dataops-argo-argo-workflows-server 2746:2746"
 ## Misc
 alias -g '$= '
 alias ezbench13="podman run --hostname podman-ezbench13 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:13"
 alias ezbench16="podman run --hostname podman-ezbench16 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:16"
-alias forklift-vault13="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg -v $(pwd):/local  660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:13.2.7 ansible-vault"
-alias forklift13="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:13.2.7 bash"
+alias forklift-vault18="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg -v $(pwd):/local  660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:18.0.6 ansible-vault"
+alias forklift18="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:18.0.6 bash"
 alias docker-ecr-login="aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
 alias podman-ecr-login="aws ecr get-login-password --region eu-west-1 | podman login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
 alias aws-hub-creds-update="kubectl -n dataops-jupyterhub cp $HOME/.aws/credentials jupyter-mcottret:/home/jovyan/.aws/credentials"
@@ -114,6 +111,7 @@ alias reload-zsh="exec zsh"
 alias dw="argo -n dataops-workflows"
 alias brew-deps='brew leaves | xargs brew deps --installed --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
 alias wcode="code --enable-features=UseOzonePlatform --ozone-platform=wayland"
+alias docker-compose="docker compose"
 function ezjupyter() {
 	tag="2.3.1"
 	if [ "$1" != "" ]
@@ -123,6 +121,9 @@ function ezjupyter() {
 	docker container run --rm -it --net host -e AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id) -e AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key) -e JUPYTER_ENABLE_LAB=yes -v ${HOME}:/home/jovyan/local 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/jupyter-spark:${tag}
 }
 alias set-java-home=". ~/.asdf/plugins/java/set-java-home.zsh"
+function cargo-upgrade() {
+        cargo install $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
+}
 
 export SPACESHIP_HOST_SHOW="always"
 
@@ -138,6 +139,7 @@ fpath=(
 [ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
 
 [ -x "$(whence -p 'kubectl')" ] && source <(kubectl completion zsh)
+[ -x "$(whence -p 'argo')" ] && source <(argo completion zsh)
 
 [ -x "$(whence -p 'starship')" ] && eval "$(starship init zsh)"
 [ -x "$(whence -p 'direnv')" ] && eval "$(direnv hook zsh)"
