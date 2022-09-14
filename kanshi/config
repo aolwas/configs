@@ -1,0 +1,10 @@
+# home configuration
+profile "home" {
+  output "Samsung Electric Company U28E590 H4ZM706431" mode 2560x1440 position 0,0
+  output eDP-1 mode 1920x1080 position 320,1440
+}
+# work configuration
+profile "work" {
+  output "Dell Inc. DELL U2518D 3C4YP97FAEDL" mode 2560x1440 position 0,0
+  output eDP-1 mode 1920x1080 position 320,1440
+}
