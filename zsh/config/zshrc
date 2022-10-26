@@ -1,18 +1,16 @@
+# Update fpath before compinit
+
+fpath=(
+  /usr/local/share/zsh-completions
+  /usr/local/share/zsh/site-functions
+  ~/.asdf/completions
+  ~/.conda-zsh-completion.git
+  $fpath
+)
+
 # init autocompletion.
 autoload -U compinit
 compinit
-#zmodload -i zsh/complist
-#setopt hash_list_all            # hash everything before completion
-#setopt always_to_end            # when completing from the middle of a word, move the cursor to the end of the word
-#setopt complete_in_word 	# allow completion from within a word/phrase
-#setopt correct                  # spelling correction for commands
-#setopt list_ambiguous           # complete as much	completion until it gets ambiguous.
-#zstyle ':completion::complete:*' use-cache on               # completion caching, use rehash to clear
-#zstyle ':completion:*' cache-path ~/.zsh/cache              # cache path
-#zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # ignore case
-#zstyle ':completion:*' menu select=2                        # menu if nb items > 2
-#zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}       # colorz !
-#zstyle ':completion:*::::' completer _expand _complete _ignored _approximate # list of completers to use
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -92,8 +90,7 @@ bindkey -e
 alias k="kubectl"
 alias kol="kubectl oidc-login"
 alias kctx="kubectx"
-alias helm2="/home/linuxbrew/.linuxbrew/opt/helm@2/bin/helm"
-alias argo-forward="kubectl port-forward -n dataops-workflows svc/dataops-argo-argo-workflows-server 2746:2746"
+alias argo-forward="kubectl port-forward -n dataops-argo svc/dataops-argo-argo-workflows-server 2746:2746"
 ## Misc
 alias -g '$= '
 alias ezbench13="podman run --hostname podman-ezbench13 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:13"
@@ -124,29 +121,21 @@ alias set-java-home=". ~/.asdf/plugins/java/set-java-home.zsh"
 function cargo-upgrade() {
         cargo install $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
 }
+alias chartmuseum-stable-forward="kubectl port-forward -n kube-system svc/chartmuseum-stable-chartmuseum 8880:8080"
+alias chartmuseum-incubator-forward="kubectl port-forward -n kube-system svc/chartmuseum-incubator-chartmuseum 8880:8080"
 
 export SPACESHIP_HOST_SHOW="always"
-
-fpath=(
-  /usr/local/share/zsh-completions
-  /usr/local/share/zsh/site-functions
-  ~/.asdf/completions
-  $fpath
-)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
 
 [ -x "$(whence -p 'kubectl')" ] && source <(kubectl completion zsh)
-[ -x "$(whence -p 'argo')" ] && source <(argo completion zsh)
+[ -x "$(whence -p 'argo')" ] && source <(argo completion zsh) && compdef _argo argo
+[ -x "$(whence -p 'helm')" ] && source <(helm completion zsh)
 
 [ -x "$(whence -p 'starship')" ] && eval "$(starship init zsh)"
 [ -x "$(whence -p 'direnv')" ] && eval "$(direnv hook zsh)"
-
-[ -x "$(whence -p 'scalaenv')" ] && eval "$(scalaenv init -)"
-[ -x "$(whence -p 'sbtenv')" ] && eval "$(sbtenv init -)"
-
 
 export -U PATH
 
