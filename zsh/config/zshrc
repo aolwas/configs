@@ -4,7 +4,6 @@ fpath=(
   /usr/local/share/zsh-completions
   /usr/local/share/zsh/site-functions
   ~/.asdf/completions
-  ~/.conda-zsh-completion.git
   $fpath
 )
 
@@ -12,52 +11,25 @@ fpath=(
 autoload -U compinit
 compinit
 
+# linuxbrew
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-case `uname` in
-  Darwin)
-  ;;
-  Linux)
-    export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
-    export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar"
-    export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew"
-    export MANPATH="/home/linuxbrew/.linuxbrew/share/man:${MANPATH+:MANPATH}"
-    export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}"
-    # commands for Linux go here
-    if [[ -z ${container} ]]; then
-	# on host
-    	export PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH:$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.devops-snippets:$HOME/.krew/bin
-	# >>> conda initialize >>>
-	# !! Contents within this block are managed by 'conda init' !!
-	__conda_setup="$('/home/aolwas/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-	if [ $? -eq 0 ]; then
-    		eval "$__conda_setup"
-	else
-    		if [ -f "/home/aolwas/mambaforge/etc/profile.d/conda.sh" ]; then
-# . "/home/aolwas/mambaforge/etc/profile.d/conda.sh"  # commented out by conda initialize
-    		else
-# export PATH="/home/aolwas/mambaforge/bin:$PATH"  # commented out by conda initialize
-    		fi
-	fi
-	unset __conda_setup
-	# <<< conda initialize <<<
-	fpath=(
-  		/home/linuxbrew/.linuxbrew/share/zsh/site-functions
-  		$fpath
-	)
+export PATH=$PATH:$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.devops-snippets:$HOME/.krew/bin
 
-    else
-        # in container
-        echo "Inside container"
-	export PATH=$PATH:$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$HOME/.devops-snippets:$HOME/.krew/bin
-	fpath=(
-  		$fpath
-  		/home/linuxbrew/.linuxbrew/share/zsh/site-functions
-	)
-    fi
-
-  ;;
-esac
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'mamba init' !!
+export MAMBA_EXE='/home/linuxbrew/.linuxbrew/Cellar/micromamba/1.4.9/bin/micromamba';
+export MAMBA_ROOT_PREFIX='/home/aolwas/micromamba';
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    alias micromamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+fi
+unset __mamba_setup
+# <<< mamba initialize <<<
 
 # User configuration
 HISTFILE=~/.zsh_history
@@ -89,17 +61,15 @@ bindkey -e
 ## kubernetes alias
 alias k="kubectl"
 alias kol="kubectl oidc-login"
-alias kctx="kubectx"
+alias kctx="kubectl ctx"
 alias argo-forward="kubectl port-forward -n dataops-argo svc/dataops-argo-argo-workflows-server 2746:2746"
 ## Misc
 alias -g '$= '
-alias ezbench13="podman run --hostname podman-ezbench13 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:13"
 alias ezbench16="podman run --hostname podman-ezbench16 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:16"
-alias forklift-vault18="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg -v $(pwd):/local  660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:18.0.6 ansible-vault"
-alias forklift18="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:18.0.6 bash"
+alias forklift-vault="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg -v $(pwd):/local  660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:20.0.0 ansible-vault"
+alias forklift="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:20.0.0 bash"
 alias docker-ecr-login="aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
 alias podman-ecr-login="aws ecr get-login-password --region eu-west-1 | podman login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
-alias aws-hub-creds-update="kubectl -n dataops-jupyterhub cp $HOME/.aws/credentials jupyter-mcottret:/home/jovyan/.aws/credentials"
 alias git-set-pro-user="git config user.name 'Maxime Cottret' && git config user.email maxime.cottret@easymile.com"
 alias git-set-perso-user="git config user.name 'Maxime Cottret' && git config user.email maxime.cottret@gmail.com"
 alias t="tmux attach -t main || tmux new -s main"
@@ -121,8 +91,8 @@ alias set-java-home=". ~/.asdf/plugins/java/set-java-home.zsh"
 function cargo-upgrade() {
         cargo install $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
 }
-alias chartmuseum-stable-forward="kubectl port-forward -n kube-system svc/chartmuseum-stable-chartmuseum 8880:8080"
-alias chartmuseum-incubator-forward="kubectl port-forward -n kube-system svc/chartmuseum-incubator-chartmuseum 8880:8080"
+alias chartmuseum-stable-forward="kubectl --context test-1.fm.easymile.com port-forward -n kube-system svc/chartmuseum-stable-chartmuseum 8880:8080"
+alias chartmuseum-incubator-forward="kubectl --context test-1.fm.easymile.com port-forward -n kube-system svc/chartmuseum-incubator-chartmuseum 8880:8080"
 
 export SPACESHIP_HOST_SHOW="always"
 
