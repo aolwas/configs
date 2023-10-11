@@ -5,6 +5,7 @@
 # Read `man 5 sway` for a complete reference.
 
 ### services
+exec /home/aolwas/.config/sway/xdg-desktop-portal-cfg.sh
 exec mako
 exec_always pkill kanshi; exec kanshi
 exec wl-paste -t text --watch clipman store --max-items=60
@@ -104,6 +105,10 @@ input "type:keyboard" {
     bindsym $mod+Shift+p exec $grimshot --notify save area
     bindsym $mod+Ctrl+Shift+p exec $grimshot --notify copy area
 
+    bindsym $mod+Ctrl+space exec 1password --show
+    bindsym $mod+Ctrl+Shift+space exec 1password --quick-access
+    #ibindsym Ctrl+Shift+l exec 1password --lock
+    #ibindsym Ctrl+\ exec 1password --fill
 
     # Kill focused window
     bindsym $mod+q kill
@@ -358,4 +363,3 @@ bar {
 }
 
 include /etc/sway/config.d/*
-

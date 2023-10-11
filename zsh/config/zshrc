@@ -16,11 +16,11 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$PATH:$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.devops-snippets:$HOME/.krew/bin
+export PATH=$PATH:$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.pixi/bin:$HOME/.devops-snippets:$HOME/.krew/bin
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!
-export MAMBA_EXE='/home/linuxbrew/.linuxbrew/Cellar/micromamba/1.4.9/bin/micromamba';
+export MAMBA_EXE='/home/aolwas/.local/bin/micromamba';
 export MAMBA_ROOT_PREFIX='/home/aolwas/micromamba';
 __mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
 if [ $? -eq 0 ]; then
@@ -96,6 +96,10 @@ alias chartmuseum-incubator-forward="kubectl --context test-1.fm.easymile.com po
 
 export SPACESHIP_HOST_SHOW="always"
 
+# Pixi based JAVA configuration
+export JAVA_HOME="$HOME/.pixi/envs/openjdk/lib/jvm"
+export JAVA_LD_LIBRARY_PATH="$HOME/.pixi/envs/openjdk/lib/server"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
@@ -103,9 +107,9 @@ export SPACESHIP_HOST_SHOW="always"
 [ -x "$(whence -p 'kubectl')" ] && source <(kubectl completion zsh)
 [ -x "$(whence -p 'argo')" ] && source <(argo completion zsh) && compdef _argo argo
 [ -x "$(whence -p 'helm')" ] && source <(helm completion zsh)
-
+[ -x "$(whence -p 'procs')" ] && source <(procs --gen-completion-out bash)
 [ -x "$(whence -p 'starship')" ] && eval "$(starship init zsh)"
 [ -x "$(whence -p 'direnv')" ] && eval "$(direnv hook zsh)"
-
+[ -x "$(whence -p 'pixi')" ] && eval "$(pixi completion --shell zsh)"
+[ -x "$(whence -p 'atuin')" ] && eval "$(atuin init zsh)"
 export -U PATH
-
