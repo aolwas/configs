@@ -61,7 +61,9 @@ bindkey -e
 ## kubernetes alias
 alias k="kubectl"
 alias kol="kubectl oidc-login"
-alias kctx="kubectl ctx"
+function kctx() {
+	kubectl-ctx $(kubectl-ctx | sk)
+}
 alias argo-forward="kubectl port-forward -n dataops-argo svc/dataops-argo-argo-workflows-server 2746:2746"
 ## Misc
 alias -g '$= '
@@ -89,7 +91,8 @@ function ezjupyter() {
 }
 alias set-java-home=". ~/.asdf/plugins/java/set-java-home.zsh"
 function cargo-upgrade() {
-        cargo install $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
+        #cargo install $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
+	for pkg in $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' '); do cargo install $pkg; done
 }
 alias chartmuseum-stable-forward="kubectl --context test-1.fm.easymile.com port-forward -n kube-system svc/chartmuseum-stable-chartmuseum 8880:8080"
 alias chartmuseum-incubator-forward="kubectl --context test-1.fm.easymile.com port-forward -n kube-system svc/chartmuseum-incubator-chartmuseum 8880:8080"
@@ -99,8 +102,6 @@ export SPACESHIP_HOST_SHOW="always"
 # Pixi based JAVA configuration
 export JAVA_HOME="$HOME/.pixi/envs/openjdk/lib/jvm"
 export JAVA_LD_LIBRARY_PATH="$HOME/.pixi/envs/openjdk/lib/server"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
 
