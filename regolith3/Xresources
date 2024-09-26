@@ -1,0 +1,5 @@
+regolith.sway.unsupported_gpu: true
+regolith.wallpaper.file: /home/aolwas/.local/share/backgrounds/2024-09-20-17-24-57-wp9347399-tachikoma-wallpapers.jpg
+regolith.lockscreen.wallpaper.file: /home/aolwas/.local/share/backgrounds/2024-09-20-17-24-57-wp9347399-tachikoma-wallpapers.jpg
+wm.bar.position: top
+wm.bar.status_config: ~/.config/regolith3/i3status-rust/config.toml

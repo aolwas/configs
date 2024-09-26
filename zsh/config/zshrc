@@ -3,12 +3,13 @@
 fpath=(
   /usr/local/share/zsh-completions
   /usr/local/share/zsh/site-functions
-  ~/.asdf/completions
   $fpath
 )
 
 # init autocompletion.
-autoload -U compinit
+autoload -U +X bashcompinit
+bashcompinit
+autoload -U +X compinit
 compinit
 
 # linuxbrew
@@ -61,13 +62,10 @@ bindkey -e
 ## kubernetes alias
 alias k="kubectl"
 alias kol="kubectl oidc-login"
-function kctx() {
-	kubectl-ctx $(kubectl-ctx | sk)
-}
+alias kctx="kubectl shell-ctx"
 alias argo-forward="kubectl port-forward -n dataops-argo svc/dataops-argo-argo-workflows-server 2746:2746"
 ## Misc
 alias -g '$= '
-alias ezbench16="podman run --hostname podman-ezbench16 --rm --net host -it -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /dev/dri:/dev/dri -v /home/aolwas:/root -v /home/linuxbrew:/home/linuxbrew -w /root docker.io/aolwas/ezbench:16"
 alias forklift-vault="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg -v $(pwd):/local  660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:20.0.0 ansible-vault"
 alias forklift="podman run --rm -it -v $(pwd)/inventories:/playbooks/inventories -v /home/aolwas/.gnupg:/root/.gnupg 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/forklift:20.0.0 bash"
 alias docker-ecr-login="aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 660006099962.dkr.ecr.eu-west-1.amazonaws.com"
@@ -81,18 +79,9 @@ alias dw="argo -n dataops-workflows"
 alias brew-deps='brew leaves | xargs brew deps --installed --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
 alias wcode="code --enable-features=UseOzonePlatform --ozone-platform=wayland"
 alias docker-compose="docker compose"
-function ezjupyter() {
-	tag="2.3.1"
-	if [ "$1" != "" ]
-	then
-	  tag="$1"
-	fi
-	docker container run --rm -it --net host -e AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id) -e AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key) -e JUPYTER_ENABLE_LAB=yes -v ${HOME}:/home/jovyan/local 660006099962.dkr.ecr.eu-west-1.amazonaws.com/easymile/jupyter-spark:${tag}
-}
-alias set-java-home=". ~/.asdf/plugins/java/set-java-home.zsh"
 function cargo-upgrade() {
         #cargo install $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
-	for pkg in $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' '); do cargo install $pkg; done
+	for pkg in $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' '); do cargo install --jobs 4 $pkg; done
 }
 alias chartmuseum-stable-forward="kubectl --context test-1.fm.easymile.com port-forward -n kube-system svc/chartmuseum-stable-chartmuseum 8880:8080"
 alias chartmuseum-incubator-forward="kubectl --context test-1.fm.easymile.com port-forward -n kube-system svc/chartmuseum-incubator-chartmuseum 8880:8080"
@@ -103,8 +92,6 @@ export SPACESHIP_HOST_SHOW="always"
 export JAVA_HOME="$HOME/.pixi/envs/openjdk/lib/jvm"
 export JAVA_LD_LIBRARY_PATH="$HOME/.pixi/envs/openjdk/lib/server"
 
-[ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
-
 [ -x "$(whence -p 'kubectl')" ] && source <(kubectl completion zsh)
 [ -x "$(whence -p 'argo')" ] && source <(argo completion zsh) && compdef _argo argo
 [ -x "$(whence -p 'helm')" ] && source <(helm completion zsh)
@@ -113,4 +100,6 @@ export JAVA_LD_LIBRARY_PATH="$HOME/.pixi/envs/openjdk/lib/server"
 [ -x "$(whence -p 'direnv')" ] && eval "$(direnv hook zsh)"
 [ -x "$(whence -p 'pixi')" ] && eval "$(pixi completion --shell zsh)"
 [ -x "$(whence -p 'atuin')" ] && eval "$(atuin init zsh)"
+[ -x "$(whence -p 'kubectl-shell_ctx')" ] && eval "$(kubectl-shell_ctx hook zsh)"
+
 export -U PATH
