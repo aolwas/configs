@@ -1,0 +1,12 @@
+[tools]
+aws-cli = "latest"
+helm = "latest"
+java = "temurin-17"
+kubectl = "latest"
+pre-commit = "latest"
+rust = "latest"
+sbt = "latest"
+sops = "latest"
+terraform = "latest"
+tflint = "latest"
+uv = "latest"
