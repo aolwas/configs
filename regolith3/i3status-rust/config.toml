@@ -29,13 +29,24 @@ missing_format = ""
 device = "DisplayDevice"
 driver = "upower"
 
+#[[block]]
+#block = "rofication"
+#interval = 1
+#socket_path = "/tmp/rofi_notification_daemon"
+#[[block.click]]
+#button = "left"
+#cmd = "ilia -p notifications"
+
 [[block]]
-block = "rofication"
-interval = 1
-socket_path = "/tmp/rofi_notification_daemon"
+block = "notify"
+format = " $icon {($notification_count.eng(w:1)) |}"
+driver = "swaync"
 [[block.click]]
 button = "left"
-cmd = "ilia -p notifications"
+action = "show"
+[[block.click]]
+button = "right"
+action = "toggle_paused"
 
 [[block]]
 block = "sound"

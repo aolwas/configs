@@ -1,11 +1,12 @@
 [tools]
 aws-cli = "latest"
 "cargo:datafusion-dft" = { version = "latest", deltalake = "", features = "s3", function-json = "" }
-"cargo:harper-ls" = "latest"
+gemini = "latest"
 helm = "3.16.3"
 hub = "latest"
 java = "temurin-17"
 kubectl = "1.30.6"
+node = "latest"
 "pipx:python-lsp-server" = "latest"
 "pipx:tox" = "latest"
 pre-commit = "latest"
@@ -17,6 +18,7 @@ terraform = "latest"
 tflint = "latest"
 "ubi:aolwas/adt" = "latest"
 "ubi:aolwas/aws-token-rotate" = "latest"
+"ubi:automattic/harper" = "latest"
 "ubi:mislav/hub" = "latest"
 "ubi:skim-rs/skim" = { version = "latest", exe = "sk" }
 uv = "latest"
